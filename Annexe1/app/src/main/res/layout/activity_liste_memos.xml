@@ -9,6 +9,7 @@
     tools:context=".ListeMemos">
 
     <ListView
+        android:id="@+id/liste"
         android:layout_width="409dp"
         android:layout_height="729dp" />
 </LinearLayout>
