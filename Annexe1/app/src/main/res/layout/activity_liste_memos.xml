@@ -10,6 +10,15 @@
 
     <ListView
         android:id="@+id/liste"
-        android:layout_width="409dp"
-        android:layout_height="729dp" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" />
+
+    <Button
+        android:id="@+id/boutonRetour"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="Retour" />
+
 </LinearLayout>

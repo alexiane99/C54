@@ -14,6 +14,7 @@ import java.io.InputStreamReader
 class ListeMemos : AppCompatActivity() {
 
     lateinit var liste : ListView
+    lateinit var boutonRetour: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +27,14 @@ class ListeMemos : AppCompatActivity() {
         }
 
         liste = findViewById(R.id.liste)
+        boutonRetour = findViewById(R.id.boutonRetour)
 
         liste.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, lireMemos()))
 
+        boutonRetour.setOnClickListener {
 
+            finish()
+        }
     }
 
     fun lireMemos() : ArrayList<String>
@@ -55,7 +60,9 @@ class ListeMemos : AppCompatActivity() {
         br.close()
         return arrayliste // longue méthode, peut être fait en 2 lignes
 
-
-
     }
+
+
+
+
 }

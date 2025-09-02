@@ -32,10 +32,8 @@ class AjouterMemo : AppCompatActivity() {
         // simplification interface fonctionnelle + lambda + lambda comme dernier param -> à revoir
         boutonAdd.setOnClickListener {
 
-
             var texteMemo = champMemo.text.toString()
             // verifier si texteMemo est vide
-
 
             if (!texteMemo.isEmpty()) {
 
