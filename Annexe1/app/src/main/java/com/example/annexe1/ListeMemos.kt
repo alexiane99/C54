@@ -47,18 +47,43 @@ class ListeMemos : AppCompatActivity() {
 
         val br = BufferedReader(isr)
 
-        val arrayliste = ArrayList<String>()
+       // val arrayliste = ArrayList<String>()
 
-        var ligne = br.readLine()
 
-        while(ligne != null) {
+        // fermer le br (flux de donnée) lorsque terminé/ exception
 
-            arrayliste.add( ligne )
-            ligne = br.readLine()
+        // version JAVA
+//        br.use {
+//
+//            var ligne = br.readLine()
+//
+//            while(ligne != null) {
+//
+//                arrayliste.add( ligne )
+//                ligne = br.readLine()
+//            }
+//
+//            // br.close() --> problème car si exception, ne fera pas br.close()
+//           // return arrayliste // longue méthode, peut être fait en 2 lignes
+//        }
+
+        // autre façon
+//        br.use {
+//
+//            br.forEachLine { ligne -> a.add(ligne)} // lambda, pas besoin des parenthèses car dernier élément, mais besoin partie gauche
+//        }
+
+        // 3e façon --> KOTLIN VERSION
+        br.use {
+
+            a = br.readLines() as ArrayList<String> // transtypage
         }
 
-        br.close()
-        return arrayliste // longue méthode, peut être fait en 2 lignes
+        // autre façon aussi
+//        br.use {
+//            br.forEachLine { a.add(it) } // it: cette ligne là
+//
+//        }
 
     }
 
