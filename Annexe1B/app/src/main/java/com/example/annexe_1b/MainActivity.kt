@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.annexe_1b.ui.theme.Annexe_1BTheme
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.Scanner
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,6 +124,26 @@ class MainActivity : ComponentActivity() {
 //    fun add_nom() : {
 //
 //    }
+
+
+    fun scanner_nbMots() : Int {
+
+        var nbMots = 0
+
+        val scanner = Scanner(System.`in`)
+
+        val line = scanner.nextLine()
+
+        val mots = line.trim().split("\\s+")
+
+        nbMots = mots.size
+
+        return nbMots
+
+
+
+    }
+
 
 }
 
