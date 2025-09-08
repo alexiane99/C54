@@ -160,19 +160,36 @@ class MainActivity : ComponentActivity() {
 
     fun scanner_nbMots() : Int {
 
+        // Les scanners utilisent des jetons
+
+        // caract blanc -> delimiter par défaut d'un scanner
+
         var nbMots = 0
 
-        val scanner = Scanner(System.`in`)
+        val fis = openFileInput("okok.txt")
 
-        val line = scanner.nextLine()
+        fis.use {
 
-        val mots = line.trim().split("\\s+")
+            val scanner = Scanner(fis) // on n'appelle pas useDelimiter car on veut un caract blanc
 
-        nbMots = mots.size
+            while(scanner.hasNext()) {
+
+                nbMots++
+
+                scanner.next()
+            }
+
+//            val line = scanner.nextLine()
+//
+//            val mots = line.trim().split("\\s+")
+//
+//            nbMots = mots.size
+
+
+        }
+
 
         return nbMots
-
-
 
     }
 
