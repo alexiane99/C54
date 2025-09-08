@@ -185,6 +185,7 @@ class MainActivity : ComponentActivity() {
 //
 //            nbMots = mots.size
 
+            return nbMots
 
         }
 

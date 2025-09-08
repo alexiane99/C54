@@ -47,7 +47,7 @@ class ListeMemos : AppCompatActivity() {
 
         val br = BufferedReader(isr)
 
-       // val arrayliste = ArrayList<String>()
+//        val arrayliste = ArrayList<String>()
 
 
         // fermer le br (flux de donnée) lorsque terminé/ exception
@@ -63,11 +63,14 @@ class ListeMemos : AppCompatActivity() {
 //                ligne = br.readLine()
 //            }
 //
-//            // br.close() --> problème car si exception, ne fera pas br.close()
-//           // return arrayliste // longue méthode, peut être fait en 2 lignes
+//             br.close() // --> problème car si exception, ne fera pas br.close()
+//            return arrayliste // longue méthode, peut être fait en 2 lignes
 //        }
 
-        // autre façon
+         //autre façon
+
+        val a : ArrayList<String>
+
 //        br.use {
 //
 //            br.forEachLine { ligne -> a.add(ligne)} // lambda, pas besoin des parenthèses car dernier élément, mais besoin partie gauche
@@ -79,11 +82,14 @@ class ListeMemos : AppCompatActivity() {
             a = br.readLines() as ArrayList<String> // transtypage
         }
 
+        return a
+
         // autre façon aussi
 //        br.use {
 //            br.forEachLine { a.add(it) } // it: cette ligne là
 //
 //        }
+
 
     }
 
