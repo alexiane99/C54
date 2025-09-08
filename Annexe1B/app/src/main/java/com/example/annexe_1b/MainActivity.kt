@@ -1,11 +1,14 @@
 package com.example.annexe_1b
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -13,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.annexe_1b.ui.theme.Annexe_1BTheme
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -20,36 +25,53 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.util.Scanner
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
-    lateinit var champNom : EditText
-    lateinit var nbLines : TextView
-    lateinit var nbCaract : TextView
-    lateinit var nbC : TextView
+    private lateinit var champNom : EditText
+    private lateinit var nbLines : TextView
+    private lateinit var nbCaract : TextView
+    private lateinit var nbC : TextView
+    private lateinit var nbMot : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            Annexe_1BTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-
-                champNom = findViewById(R.id.champNom)
-                nbLines = findViewById(R.id.nbLine)
-                nbCaract = findViewById(R.id.nbCaract)
-                nbC = findViewById(R.id.nbC)
-            }
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
+
+
+        champNom = findViewById(R.id.champNom)
+        nbLines = findViewById(R.id.nbLine)
+        nbCaract = findViewById(R.id.nbCaract)
+        nbC = findViewById(R.id.nbC)
+        nbMot = findViewById(R.id.nbMot)
+
+        // initialiser écouteur
+
+        val ec = Ecouteur()
+
+        champNom.setOnClickListener(ec)
     }
 
-    fun count_nbLignes() : Int {
+    inner class Ecouteur : View.OnClickListener {
 
-        val fis = openFileInput("okok.txt")
+        override fun onClick(v:View?) {
+
+            when(v) {
+
+                champNom -> addNom()
+            }
+        }
+
+    }
+
+    private fun countNbLignes() : TextView {
+
+        val fis = openFileInput("fichier.txt")
 
         val isr = InputStreamReader(fis)
 
@@ -69,12 +91,14 @@ class MainActivity : ComponentActivity() {
             br.forEachLine { nbLignes += 1 } // va aussi fermer le br lorsque la tâche est terminée
         }
 
-        return nbLignes
+       nbLines.text = nbLignes.toString()
+
+        return nbLines
     }
 
-    fun count_nombreCaract() : Int {
+    private fun countNombreCaract() : TextView {
 
-        val fis = openFileInput("okok.txt")
+        val fis = openFileInput("fichier.txt")
 
         val isr = InputStreamReader(fis)
 
@@ -84,7 +108,7 @@ class MainActivity : ComponentActivity() {
 
         br.use {
 
-            var ligne = br.readLine() // String
+            //var ligne = br.readLine() // String
 
             br.forEachLine { ligne ->
 
@@ -96,13 +120,15 @@ class MainActivity : ComponentActivity() {
 
         }
 
-        return sumCaractLignes
+        nbCaract.text = sumCaractLignes.toString()
+
+        return nbCaract
 
     }
 
-    fun count_nombreC() : Int {
+    private fun countNombreC() : TextView {
 
-        val fis = openFileInput("okok.txt")
+        val fis = openFileInput("fichier.txt")
 
         val isr = InputStreamReader(fis)
 
@@ -115,7 +141,7 @@ class MainActivity : ComponentActivity() {
 
             br.forEachLine {
 
-                var ligne = br.readLine() // String
+                val ligne = br.readLine() // String
 
 //                for (i in 0 <..ligne.length)
 //                    if(ligne.elementAt(i)== 'C' || ligne.elementAt(i)== 'c'  )
@@ -133,14 +159,16 @@ class MainActivity : ComponentActivity() {
 
         }
 
-        return nombreC
+        nbC.text = nombreC.toString()
+
+        return nbC
     }
 
-    fun add_nom() {
+    private fun addNom() {
 
-        var nom = champNom.text.toString()
+        val nom = champNom.text.toString()
 
-        if (!nom.isEmpty()) {
+        if (nom.isNotEmpty()) {
 
             val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
             val osw = OutputStreamWriter(fos)
@@ -158,15 +186,15 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    fun scanner_nbMots() : Int {
+    fun scannerNbMots() : TextView {
 
-        // Les scanners utilisent des jetons
+        // Les scanners utilisent des jetons (ou tokens)
 
-        // caract blanc -> delimiter par défaut d'un scanner
+        // caract blanc -> est le delimiter par défaut d'un scanner
 
         var nbMots = 0
 
-        val fis = openFileInput("okok.txt")
+        val fis = openFileInput("fichier.txt")
 
         fis.use {
 
@@ -181,18 +209,25 @@ class MainActivity : ComponentActivity() {
 
 //            val line = scanner.nextLine()
 //
-//            val mots = line.trim().split("\\s+")
+//            val mots = line.trim().split("\\s+") // n'est pas nécessaire normalement car delimiter est caract blanc par défaut
 //
 //            nbMots = mots.size
 
-            return nbMots
+            nbMot.text = nbMots.toString()
+
+            return nbMot
 
         }
 
 
-        return nbMots
-
     }
+
+        nbLines = countNbLignes()
+        nbCaract = countNombreCaract()
+        nbC = countNombreC()
+
+        nbMot = scannerNbMots()
+
 
 
 }
