@@ -1,6 +1,8 @@
 package com.example.annexe_1b
 
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,10 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.annexe_1b.ui.theme.Annexe_1BTheme
 import java.io.BufferedReader
+import java.io.BufferedWriter
 import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.util.Scanner
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var champNom : EditText
+    lateinit var nbLines : TextView
+    lateinit var nbCaract : TextView
+    lateinit var nbC : TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,6 +38,11 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+
+                champNom = findViewById(R.id.champNom)
+                nbLines = findViewById(R.id.nbLine)
+                nbCaract = findViewById(R.id.nbCaract)
+                nbC = findViewById(R.id.nbC)
             }
         }
     }
@@ -121,9 +136,26 @@ class MainActivity : ComponentActivity() {
         return nombreC
     }
 
-//    fun add_nom() : {
-//
-//    }
+    fun add_nom() {
+
+        var nom = champNom.text.toString()
+
+        if (!nom.isEmpty()) {
+
+            val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
+            val osw = OutputStreamWriter(fos)
+            val bw = BufferedWriter(osw)
+
+            bw.write(nom)
+            bw.newLine()
+
+            bw.close()
+
+            champNom.text.clear()
+
+            finish()
+
+    }
 
 
     fun scanner_nbMots() : Int {
