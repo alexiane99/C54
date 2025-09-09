@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Nombre de lignes :"
+            android:text="@string/nombre_de_lignes"
             android:textSize="16sp" />
 
         <TextView
@@ -41,7 +42,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Nombre de caractères :"
+            android:text="@string/nombre_de_caract_res"
             android:textSize="16sp" />
 
         <TextView
@@ -66,7 +67,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Nombre de C :"
+            android:text="@string/nombre_de_c"
             android:textSize="16sp" />
 
         <TextView
@@ -91,7 +92,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Nom :"
+            android:text="@string/nom"
             android:textSize="16sp" />
 
         <EditText
@@ -102,7 +103,8 @@
             android:ems="10"
             android:gravity="center"
             android:hint="@string/enter_text"
-            android:inputType="text" />
+            android:inputType="text"
+            android:text="@string/will" />
 
     </LinearLayout>
 
@@ -125,7 +127,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Nombre de mots :" />
+                android:text="@string/nombre_de_mots" />
 
             <TextView
                 android:id="@+id/nbMot"
@@ -140,6 +142,6 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go!" />
+            android:text="@string/go" />
     </LinearLayout>
 </LinearLayout>

@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
             when(v) {
 
-                champNom -> addNom()
+                champNom.text -> addNom()
             }
         }
 
@@ -214,11 +214,9 @@ class MainActivity : AppCompatActivity() {
 //            nbMots = mots.size
 
             nbMot.text = nbMots.toString()
-
-            return nbMot
-
         }
 
+        return nbMot
 
     }
 
@@ -229,23 +227,6 @@ class MainActivity : AppCompatActivity() {
         nbMot = scannerNbMots()
 
 
-
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Annexe_1BTheme {
-        Greeting("Android")
     }
 }
 
-}

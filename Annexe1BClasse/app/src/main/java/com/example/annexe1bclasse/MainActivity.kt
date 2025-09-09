@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nbC: TextView
     private lateinit var nbMot: TextView
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
 
         champNom = findViewById(R.id.champNom)
         nbLine = findViewById(R.id.nbLine)
@@ -49,17 +50,17 @@ class MainActivity : AppCompatActivity() {
 
     inner class Ecouteur : View.OnClickListener {
 
-        override fun onClick(v: View?) {
+        override fun onClick(v:View?) {
 
-            when (v) {
+            when(v) {
 
-                champNom -> addNom()
+                champNom.text -> addNom()
             }
         }
 
     }
 
-   fun countNbLignes(): TextView {
+    private fun countNbLignes() : TextView {
 
         val fis = openFileInput("fichier.txt")
 
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         return nbLine
     }
 
-    fun countNombreCaract(): TextView {
+    private fun countNombreCaract() : TextView {
 
         val fis = openFileInput("fichier.txt")
 
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun countNombreC(): TextView {
+    private fun countNombreC() : TextView {
 
         val fis = openFileInput("fichier.txt")
 
@@ -154,16 +155,13 @@ class MainActivity : AppCompatActivity() {
         return nbC
     }
 
-    fun addNom() {
+    private fun addNom() {
 
         val nom = champNom.text.toString()
 
         if (nom.isNotEmpty()) {
 
-            val fos = openFileOutput(
-                "fichier.txt",
-                MODE_APPEND
-            ) // append ajoute à la suite du contenu déjà là
+            val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
             val osw = OutputStreamWriter(fos)
             val bw = BufferedWriter(osw)
 
@@ -179,7 +177,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        fun scannerNbMots(): TextView {
+        fun scannerNbMots() : TextView {
 
             // Les scanners utilisent des jetons (ou tokens)
 
@@ -191,10 +189,9 @@ class MainActivity : AppCompatActivity() {
 
             fis.use {
 
-                val scanner =
-                    Scanner(fis) // on n'appelle pas useDelimiter car on veut un caract blanc
+                val scanner = Scanner(fis) // on n'appelle pas useDelimiter car on veut un caract blanc
 
-                while (scanner.hasNext()) {
+                while(scanner.hasNext()) {
 
                     nbMots++
 
@@ -208,13 +205,17 @@ class MainActivity : AppCompatActivity() {
 //            nbMots = mots.size
 
                 nbMot.text = nbMots.toString()
-
-                return nbMot
-
             }
 
+            return nbMot
 
         }
+
+        nbLine = countNbLignes()
+        nbCaract = countNombreCaract()
+        nbC = countNombreC()
+
+        nbMot = scannerNbMots()
 
 
     }
