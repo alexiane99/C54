@@ -2,6 +2,7 @@ package com.example.annexe_1b
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var nbCaract: TextView
     lateinit var nbC: TextView
     lateinit var nbMot: TextView
+    lateinit var boutonGo : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +39,13 @@ class MainActivity : AppCompatActivity() {
         nbCaract = findViewById(R.id.nbCaract)
         nbC = findViewById(R.id.nbC)
         nbMot = findViewById(R.id.nbMot)
+        boutonGo = findViewById(R.id.boutonGo)
 
         // initialiser écouteur
 
         val ec = Ecouteur()
 
-        champNom.setOnClickListener(ec)
+        boutonGo.setOnClickListener(ec)
 
         update()
     }
@@ -53,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
             when(v) {
 
-                champNom.text -> {
+                boutonGo -> {
                     addNom()
                     update()
                 }
@@ -176,7 +179,7 @@ class MainActivity : AppCompatActivity() {
 
             champNom.text.clear()
 
-            finish()
+            //finish()
 
         }
     }

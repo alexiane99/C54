@@ -98,16 +98,15 @@
         android:text="Nom"
         android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/champNom"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Enter_text"
-        android:inputType="text"
-        android:text="Will" />
+        <EditText
+            android:id="@+id/champNom"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter_text"
+            android:inputType="text" />
 
     </LinearLayout>
 
@@ -142,7 +141,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/boutonGo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Go" />
