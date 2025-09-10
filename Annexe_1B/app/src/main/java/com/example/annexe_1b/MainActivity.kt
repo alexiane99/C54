@@ -1,6 +1,5 @@
-package com.example.annexe1bclasse
+package com.example.annexe_1b
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var nbC: TextView
     lateinit var nbMot: TextView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,8 +31,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
 
         champNom = findViewById(R.id.champNom)
         nbLine = findViewById(R.id.nbLine)
@@ -46,17 +42,14 @@ class MainActivity : AppCompatActivity() {
 
         val ec = Ecouteur()
 
-
         champNom.setOnClickListener(ec)
 
         update()
-
-
     }
 
     inner class Ecouteur : View.OnClickListener {
 
-        override fun onClick(v:View?) {
+        override fun onClick(v: View?) {
 
             when(v) {
 
@@ -77,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         countNbMots()
     }
 
-     fun countNbLignes() {
+    fun countNbLignes() {
 
         val fis = openFileInput("fichier.txt")
 
@@ -103,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-     fun countNombreCaract() {
+    fun countNombreCaract(){
 
         val fis = openFileInput("fichier.txt")
 
@@ -131,7 +124,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-     fun countNombreC() {
+    fun countNombreC() {
 
         val fis = openFileInput("fichier.txt")
 
@@ -144,21 +137,19 @@ class MainActivity : AppCompatActivity() {
         br.use {
 
 
-            br.forEachLine {
+            br.forEachLine { ligne ->
 
-                val ligne = br.readLine() // String
+                //val ligne = br.readLine() // String
 
 //                for (i in 0 <..ligne.length)
 //                    if(ligne.elementAt(i)== 'C' || ligne.elementAt(i)== 'c'  )
 //                        nombreC += 1
 
-                br.forEachLine {
 
                     if (ligne.contains('c') || ligne.contains('C')) {
 
                         nombreC += 1
                     }
-                }
 
             }
 
@@ -168,31 +159,27 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-     fun addNom() {
+    fun addNom() {
 
-         val nom = champNom.text.toString()
+        val nom = champNom.text.toString()
 
-         if (nom.isNotEmpty()) {
+        if (nom.isNotEmpty()) {
 
-             val fos = openFileOutput(
-                 "fichier.txt",
-                 MODE_APPEND
-             ) // append ajoute à la suite du contenu déjà là
-             val osw = OutputStreamWriter(fos)
-             val bw = BufferedWriter(osw)
+            val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
+            val osw = OutputStreamWriter(fos)
+            val bw = BufferedWriter(osw)
 
-             bw.write(nom)
-             bw.newLine()
+            bw.write(nom)
+            bw.newLine()
 
-             bw.close()
+            bw.close()
 
-             champNom.text.clear()
+            champNom.text.clear()
 
-             finish()
+            finish()
 
-         }
-
-     }
+        }
+    }
 
     fun countNbMots() {
 
@@ -215,11 +202,11 @@ class MainActivity : AppCompatActivity() {
                 scanner.next()
             }
 
-    //            val line = scanner.nextLine()
-    //
-    //            val mots = line.trim().split("\\s+") // n'est pas nécessaire normalement car delimiter est caract blanc par défaut
-    //
-    //            nbMots = mots.size
+            //            val line = scanner.nextLine()
+            //
+            //            val mots = line.trim().split("\\s+") // n'est pas nécessaire normalement car delimiter est caract blanc par défaut
+            //
+            //            nbMots = mots.size
 
         }
 
