@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.BufferedReader
+import java.io.FileNotFoundException
 import java.io.InputStreamReader
 
 class ListeMemos : AppCompatActivity() {
@@ -29,7 +31,7 @@ class ListeMemos : AppCompatActivity() {
         liste = findViewById(R.id.liste)
         boutonRetour = findViewById(R.id.boutonRetour)
 
-        liste.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, lireMemos()))
+        liste.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, lireMemos()!!))
 
         boutonRetour.setOnClickListener {
 
@@ -37,57 +39,52 @@ class ListeMemos : AppCompatActivity() {
         }
     }
 
-    fun lireMemos() : ArrayList<String>
-    {
+//    fun lireMemos() : ArrayList<String>
+//    {
         // flux de données
 
-        val fis = openFileInput("fichier.txt")
-
-        val isr = InputStreamReader(fis)
-
-        val br = BufferedReader(isr)
-
-       // val arrayliste = ArrayList<String>()
+//        val fis = openFileInput("fichier.txt")
+//
+//        val isr = InputStreamReader(fis)
+//
+//        val br = BufferedReader(isr)
 
 
-        // fermer le br (flux de donnée) lorsque terminé/ exception
-
-        // version JAVA
 //        br.use {
 //
-//            var ligne = br.readLine()
+//            var a = ArrayList<String>(
 //
-//            while(ligne != null) {
-//
-//                arrayliste.add( ligne )
-//                ligne = br.readLine()
-//            }
-//
-//            // br.close() --> problème car si exception, ne fera pas br.close()
-//           // return arrayliste // longue méthode, peut être fait en 2 lignes
+//            )
+//            a = br.readLines() as ArrayList<String> // transtypage
 //        }
 
-        // autre façon
-//        br.use {
-//
-//            br.forEachLine { ligne -> a.add(ligne)} // lambda, pas besoin des parenthèses car dernier élément, mais besoin partie gauche
-//        }
+//}
 
-        // 3e façon --> KOTLIN VERSION
-        br.use {
 
-            a = br.readLines() as ArrayList<String> // transtypage
+    fun lireMemos() : ArrayList<String>? {
+
+        var v : ArrayList<Memo>? = null
+        var triee : ArrayList<String>? = null
+
+        try {
+            var v = SingletonMemos.recupererListe(this@ListeMemos) // qui vient du singleton
+
+            v.sortWith(compareBy{it.echeance}) // fonction de haut niveau car prend en parametre une lambda; trie en fonction de l'échéance
+            var triee = ArrayList<String>() // liste de String vide
+            for (memo in v) // pour chaque memo dans la liste
+                triee.add(memo.message) // ajoute seulement les messages des memos
+
+        }
+        catch(f:FileNotFoundException)
+        {
+
+            Toast.makeText(this@ListeMemos, "pas de fichier de sérialisarion", Toast.LENGTH_SHORT).show() // pour la durée
+            finish()
         }
 
-        // autre façon aussi
-//        br.use {
-//            br.forEachLine { a.add(it) } // it: cette ligne là
-//
-//        }
+        return triee
 
     }
-
-
 
 
 }

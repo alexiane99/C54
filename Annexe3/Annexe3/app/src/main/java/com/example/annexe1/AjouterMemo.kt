@@ -1,20 +1,33 @@
 package com.example.annexe1
 
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.View.OnClickListener
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.BufferedWriter
 import java.io.OutputStream
 import java.io.OutputStreamWriter
+import java.time.LocalDate
 
 class AjouterMemo : AppCompatActivity() {
 
     lateinit var boutonAdd: Button
     lateinit var champMemo : EditText
+    lateinit var boutonEcheance : Button
+    lateinit var champDate : TextView
+
+    var dateChoisie = LocalDate.now().plusDays(1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +41,12 @@ class AjouterMemo : AppCompatActivity() {
 
         boutonAdd = findViewById(R.id.boutonAdd)
         champMemo = findViewById(R.id.champMemo)
+        boutonEcheance = findViewById(R.id.boutonEcheance)
+        champDate = findViewById(R.id.champDate)
+
+        val ec = Ecouteur()
+
+        boutonEcheance.setOnClickListener(ec)
 
         // simplification interface fonctionnelle + lambda + lambda comme dernier param -> à revoir
         boutonAdd.setOnClickListener {
@@ -55,4 +74,62 @@ class AjouterMemo : AppCompatActivity() {
 
         }
     }
+
+    inner class Ecouteur : OnClickListener, OnDateSetListener {
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun onClick(v: View?) {
+            if (v == boutonEcheance) {
+                val d = DatePickerDialog(this@AjouterMemo)
+
+                d.setOnDateSetListener(this)
+                // on veut l'afficher
+                d.show()
+
+            } else // bouton Ajouter
+            {
+                //ajouter le memo dans la liste du singleton
+
+//                if(v == boutonAdd) {
+//                }
+
+                SingletonMemos.ajouterMemo(Memo(champMemo.text.toString(), dateChoisie))//LocalDate.parse(champDate.text.toString())
+
+                // mettre à jour ici le fichier de sérialisation
+
+                SingletonMemos.serialiserListe(this@AjouterMemo)
+
+                champMemo.text.clear()
+                champDate.text = ""
+
+                //}
+
+                finish()
+            }
+
+        }
+
+        override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+            TODO("Not yet implemented")
+
+            // aller chercher le message et le localDate
+
+            dateChoisie = LocalDate.of(year, month+1, dayOfMonth) // attention, commence à zéro!!
+
+            champDate.setText(dateChoisie.toString())
+
+            var date = champDate.text.toString()
+
+//            if (date.isNotEmpty()) {
+
+            // créer un objet Memo
+
+            // ajouter à la liste
+        // }
+
+        }
+
+
+    }
+
 }
