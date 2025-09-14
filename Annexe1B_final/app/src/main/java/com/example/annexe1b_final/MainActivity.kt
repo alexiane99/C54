@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
 //        vecteurPlanetes.add(Planete ("Saturne", 146))
 //        vecteurPlanetes.add(Planete ("Uranus", 28))
 //        vecteurPlanetes.add(Planete ("Neptune", 14))
-
     }
 
     inner class Ecouteur : View.OnClickListener {
@@ -76,9 +75,9 @@ class MainActivity : AppCompatActivity() {
 
     fun updateVecteur(vector : Vector<Planete>) {
 
-        //val fis = openFileInput("planete_satell.txt")
+        val fis = openFileInput("planete_satell.txt")
 
-        val fis = getResources().openRawResource(R.raw.planete_satell)
+        //val fis = getResources().openRawResource(R.raw.planete_satell)
 
         //val isr = InputStreamReader(fis)
 
@@ -138,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
         if (nom.isNotEmpty() && nbSatell.isNotEmpty()) {
 
-            val fos = openFileOutput("planete_satell.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
+            val fos = openFileOutput("planete-satell.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
             val osw = OutputStreamWriter(fos)
             val bw = BufferedWriter(osw)
 

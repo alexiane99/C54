@@ -1,0 +1,8 @@
+Mercure_0
+Venus_0
+Terre_1
+Mars_2
+Jupiter_95
+Saturne_146
+Uranus_28
+Neptune_14

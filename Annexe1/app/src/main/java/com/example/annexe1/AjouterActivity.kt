@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.BufferedWriter
-import java.io.OutputStream
 import java.io.OutputStreamWriter
 
-class AjouterMemo : AppCompatActivity() {
+class AjouterActivity : AppCompatActivity() {
 
     lateinit var boutonAdd: Button
     lateinit var champMemo : EditText

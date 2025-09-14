@@ -144,16 +144,19 @@ class MainActivity : AppCompatActivity() {
 
                 //val ligne = br.readLine() // String
 
+                var i: Int;
+
 //                for (i in 0 <..ligne.length)
 //                    if(ligne.elementAt(i)== 'C' || ligne.elementAt(i)== 'c'  )
 //                        nombreC += 1
 
+                for (i in 0 until ligne.length) {
 
-                    if (ligne.contains('c') || ligne.contains('C')) {
+                    if (ligne.elementAt(i) == 'c' || ligne.elementAt(i) == 'C') {
 
                         nombreC += 1
                     }
-
+                }
             }
 
         }

@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class ListeMemos : AppCompatActivity() {
+class ListeActivity : AppCompatActivity() {
 
     lateinit var liste : ListView
     lateinit var boutonRetour: Button
