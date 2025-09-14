@@ -2,6 +2,7 @@ package com.example.annexe1
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -48,44 +49,45 @@ class AjouterActivity : AppCompatActivity() {
         boutonEcheance.setOnClickListener(ec)
 
         // simplification interface fonctionnelle + lambda + lambda comme dernier param -> à revoir
-        boutonAdd.setOnClickListener {
+  //      boutonAdd.setOnClickListener {
 
-            var texteMemo = champMemo.text.toString()
-            // verifier si texteMemo est vide
+//            var texteMemo = champMemo.text.toString()
+//            // verifier si texteMemo est vide
+//
+//            if (!texteMemo.isEmpty()) {
+//
+//                val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
+//                val osw = OutputStreamWriter(fos)
+//                val bw = BufferedWriter(osw)
+//
+//                bw.write(texteMemo)
+//                bw.newLine()
+//
+//                bw.close()
+//
+//                champMemo.text.clear()
+//
+//                finish()
 
-            if (!texteMemo.isEmpty()) {
-
-                val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
-                val osw = OutputStreamWriter(fos)
-                val bw = BufferedWriter(osw)
-
-                bw.write(texteMemo)
-                bw.newLine()
-
-                bw.close()
-
-                champMemo.text.clear()
-
-                finish()
-
-            }
+            //}
 
 
-        }
+        //}
     }
 
     inner class Ecouteur : OnClickListener, OnDateSetListener {
 
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun onClick(v: View?) {
             if (v == boutonEcheance) {
+
                 val d = DatePickerDialog(this@AjouterActivity)
 
                 d.setOnDateSetListener(this)
                 // on veut l'afficher
                 d.show()
 
-            } else // bouton Ajouter
+            }
+            else // bouton Ajouter
             {
                 //ajouter le memo dans la liste du singleton
 
@@ -103,13 +105,15 @@ class AjouterActivity : AppCompatActivity() {
 
                 //}
 
-                finish()
+               // finish()
+
+                val i = Intent(this@AjouterActivity, MainActivity::class.java)
+                startActivity(i)
             }
 
         }
 
         override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-            TODO("Not yet implemented")
 
             // aller chercher le message et le localDate
 
@@ -117,14 +121,14 @@ class AjouterActivity : AppCompatActivity() {
 
             champDate.setText(dateChoisie.toString())
 
-            var date = champDate.text.toString()
+            //var date = champDate.text.toString()
 
-//            if (date.isNotEmpty()) {
+             //créer un objet Memo
 
-            // créer un objet Memo
+             //ajouter à la liste
 
-            // ajouter à la liste
-        // }
+
+
 
         }
 
