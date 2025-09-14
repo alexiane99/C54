@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
             val intentRetour: Intent =
                 result.data!! // !! : certain que l'intent n'est pas nul car on fait une selection, si null quand même, va générer une exception, j'assume s il y a une erreur dans l'intent
             val uri =
-                intentRetour.data!!  // ceetain que j'ai fait une sélection , sinon lance exception
+                intentRetour.data!!  // certain que j'ai fait une sélection , sinon lance exception
             val resolver =
-                contentResolver // objet permettant d'accéder aux données sur le téléphones ( méthodes CRUD ), présente les données sous forme de tables
+                contentResolver // objet permettant d'accéder aux données sur le téléphone ( méthodes CRUD ), présente les données sous forme de tables
 
             //nom du fichier
             val cursor =
@@ -105,14 +105,15 @@ class MainActivity : AppCompatActivity() {
     fun tempsDeLecture(chemin: InputStream): String {
 
 
+        // Comparaison ici --sans Buffer (fis) et avec Buffer (bis)
         val fis: FileInputStream = chemin as FileInputStream
         val bis: BufferedInputStream = BufferedInputStream(fis)
         var temps : Long = 0
 
-        fis.use { // bis.use
+        bis.use { // bis.use
 
             val debut = System.currentTimeMillis()
-            while (fis.read()!= - 1) // bis
+            while (bis.read()!= - 1) // bis
             {
 
             }
@@ -120,10 +121,7 @@ class MainActivity : AppCompatActivity() {
             val fin = System.currentTimeMillis()
             temps = fin - debut
         }
-
-
             return temps.toString()
-
 
     }
 }
