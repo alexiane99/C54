@@ -3,7 +3,6 @@ package com.example.annexe1
 import android.content.Context
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.util.ArrayList
 import kotlin.collections.ArrayList
 
 object SingletonMemos {
@@ -27,7 +26,7 @@ object SingletonMemos {
         val fos = contexte.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
         val oos = ObjectOutputStream(fos) // tampon spécial pour les objets
 
-        oos.use {  // fct de haut niveau qui prend en parametre une lamnbda, donc pas besoin de ( )
+        oos.use {  // fct de haut niveau qui prend en parametre une lambda, donc pas besoin de ( )
             oos.writeObject(liste)
         }
     }

@@ -48,12 +48,12 @@ class MainActivity : AppCompatActivity() {
                 boutonQuitter -> finish()
                 boutonAjouter -> {
 
-                    val i = Intent(this@MainActivity, AjouterMemo::class.java)
+                    val i = Intent(this@MainActivity, AjouterActivity::class.java)
                     startActivity(i)
                 }
                 boutonAfficher -> {
 
-                    val i = Intent(this@MainActivity, ListeMemos::class.java)
+                    val i = Intent(this@MainActivity, ListeActivity::class.java)
                     startActivity(i)
                 }
 

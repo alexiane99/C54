@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.annexe1"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -33,6 +33,8 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildToolsVersion = "36.0.0"
+    ndkVersion = "26.1.10909125"
 }
 
 dependencies {

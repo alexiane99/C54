@@ -9,11 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.io.BufferedReader
 import java.io.FileNotFoundException
-import java.io.InputStreamReader
 
-class ListeMemos : AppCompatActivity() {
+class ListeActivity : AppCompatActivity() {
 
     lateinit var liste : ListView
     lateinit var boutonRetour: Button
@@ -67,7 +65,7 @@ class ListeMemos : AppCompatActivity() {
         var triee : ArrayList<String>? = null
 
         try {
-            var v = SingletonMemos.recupererListe(this@ListeMemos) // qui vient du singleton
+            var v = SingletonMemos.recupererListe(this@ListeActivity) // qui vient du singleton
 
             v.sortWith(compareBy{it.echeance}) // fonction de haut niveau car prend en parametre une lambda; trie en fonction de l'échéance
             var triee = ArrayList<String>() // liste de String vide
@@ -78,7 +76,7 @@ class ListeMemos : AppCompatActivity() {
         catch(f:FileNotFoundException)
         {
 
-            Toast.makeText(this@ListeMemos, "pas de fichier de sérialisarion", Toast.LENGTH_SHORT).show() // pour la durée
+            Toast.makeText(this@ListeActivity, "pas de fichier de sérialisarion", Toast.LENGTH_SHORT).show() // pour la durée
             finish()
         }
 

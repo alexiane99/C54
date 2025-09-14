@@ -16,11 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.BufferedWriter
-import java.io.OutputStream
 import java.io.OutputStreamWriter
 import java.time.LocalDate
 
-class AjouterMemo : AppCompatActivity() {
+class AjouterActivity : AppCompatActivity() {
 
     lateinit var boutonAdd: Button
     lateinit var champMemo : EditText
@@ -80,7 +79,7 @@ class AjouterMemo : AppCompatActivity() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onClick(v: View?) {
             if (v == boutonEcheance) {
-                val d = DatePickerDialog(this@AjouterMemo)
+                val d = DatePickerDialog(this@AjouterActivity)
 
                 d.setOnDateSetListener(this)
                 // on veut l'afficher
@@ -97,7 +96,7 @@ class AjouterMemo : AppCompatActivity() {
 
                 // mettre à jour ici le fichier de sérialisation
 
-                SingletonMemos.serialiserListe(this@AjouterMemo)
+                SingletonMemos.serialiserListe(this@AjouterActivity)
 
                 champMemo.text.clear()
                 champDate.text = ""
