@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
             when (v) {
 
                 boutonConfirm -> {
+
                     addPlanete(vecteurPlanetes)
 
                     val i = Intent(this@MainActivity, Afficher::class.java)
@@ -75,9 +76,9 @@ class MainActivity : AppCompatActivity() {
 
     fun updateVecteur(vector : Vector<Planete>) {
 
-        val fis = openFileInput("planete_satell.txt")
+        val fis = openFileInput("planetes.txt")
 
-        //val fis = getResources().openRawResource(R.raw.planete_satell)
+        //val fis = getResources().openRawResource(R.raw.planetes)
 
         //val isr = InputStreamReader(fis)
 
@@ -119,15 +120,8 @@ class MainActivity : AppCompatActivity() {
 //                    var temp = Planete(scanner.next(), scanner.nextInt()) // ou has.next() as Int
 //                        vector.add(temp)
 //                    })
-
-
             }
-
-
         }
-
-
-
     }
 
     fun addPlanete(vector: Vector<Planete>) {
@@ -137,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
         if (nom.isNotEmpty() && nbSatell.isNotEmpty()) {
 
-            val fos = openFileOutput("planete-satell.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
+            val fos = openFileOutput("planetes.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
             val osw = OutputStreamWriter(fos)
             val bw = BufferedWriter(osw)
 
@@ -155,12 +149,8 @@ class MainActivity : AppCompatActivity() {
 
             finish()
 
-
         }
 
         updateVecteur(vector)
     }
-
-
-
 }

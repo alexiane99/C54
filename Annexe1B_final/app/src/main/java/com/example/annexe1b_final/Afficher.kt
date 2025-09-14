@@ -1,5 +1,6 @@
 package com.example.annexe1b_final
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -33,14 +34,16 @@ class Afficher : AppCompatActivity() {
 
         boutonRetour.setOnClickListener {
 
-            finish()
+            val i = Intent(this@Afficher, MainActivity::class.java)
+
+            startActivity(i)
         }
 
     }
 
     fun lireVecteur() : ArrayList<String> {
 
-        val fis = openFileInput("planete_satell.txt")
+        val fis = openFileInput("planetes.txt")
 
         val isr = InputStreamReader(fis)
 
