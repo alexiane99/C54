@@ -47,6 +47,7 @@ class AjouterActivity : AppCompatActivity() {
         val ec = Ecouteur()
 
         boutonEcheance.setOnClickListener(ec)
+        boutonAdd.setOnClickListener(ec)
 
         // simplification interface fonctionnelle + lambda + lambda comme dernier param -> à revoir
   //      boutonAdd.setOnClickListener {
@@ -89,10 +90,7 @@ class AjouterActivity : AppCompatActivity() {
             }
             else // bouton Ajouter
             {
-                //ajouter le memo dans la liste du singleton
-
-//                if(v == boutonAdd) {
-//                }
+                //Créer un objet mémo et l'ajouter dans la liste du singleton
 
                 SingletonMemos.ajouterMemo(Memo(champMemo.text.toString(), dateChoisie))//LocalDate.parse(champDate.text.toString())
 
@@ -103,12 +101,9 @@ class AjouterActivity : AppCompatActivity() {
                 champMemo.text.clear()
                 champDate.text = ""
 
-                //}
+               finish()
 
-               // finish()
-
-                val i = Intent(this@AjouterActivity, MainActivity::class.java)
-                startActivity(i)
+                // ajouter le memo dans la liste du singleton
             }
 
         }
@@ -121,17 +116,11 @@ class AjouterActivity : AppCompatActivity() {
 
             champDate.setText(dateChoisie.toString())
 
-            //var date = champDate.text.toString()
-
              //créer un objet Memo
 
              //ajouter à la liste
 
-
-
-
         }
-
 
     }
 

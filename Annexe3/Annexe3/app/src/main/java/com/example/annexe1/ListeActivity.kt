@@ -29,12 +29,14 @@ class ListeActivity : AppCompatActivity() {
         liste = findViewById(R.id.liste)
         boutonRetour = findViewById(R.id.boutonRetour)
 
-        liste.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, lireMemos()!!))
+        //liste.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, lireMemos()!!))
 
-        boutonRetour.setOnClickListener {
+        liste.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, lireMemos()!!)
 
-            finish()
-        }
+//        boutonRetour.setOnClickListener {
+//
+//            finish()
+//        }
     }
 
 //    fun lireMemos() : ArrayList<String>
@@ -61,16 +63,16 @@ class ListeActivity : AppCompatActivity() {
 
     fun lireMemos() : ArrayList<String>? {
 
-        var v : ArrayList<Memo>? = null
+        //var v : ArrayList<Memo>? = null
         var triee : ArrayList<String>? = null
 
         try {
             var v = SingletonMemos.recupererListe(this@ListeActivity) // qui vient du singleton
 
             v.sortWith(compareBy{it.echeance}) // fonction de haut niveau car prend en parametre une lambda; trie en fonction de l'échéance
-            var triee = ArrayList<String>() // liste de String vide
+            triee = ArrayList<String>() // liste de String vide
             for (memo in v) // pour chaque memo dans la liste
-                triee.add(memo.message) // ajoute seulement les messages des memos
+                triee.add(memo.message + " " + memo.echeance) // ajoute seulement les messages des memos
 
         }
         catch(f:FileNotFoundException)
