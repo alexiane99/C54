@@ -75,5 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.i("cycle", "onDestroy")
         println("onDestroy")
+
+        //fffff
     }
 }
