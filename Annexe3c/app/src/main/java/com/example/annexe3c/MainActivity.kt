@@ -2,7 +2,9 @@ package com.example.annexe3c
 
 import android.content.Context
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Identity
 import android.widget.CheckBox
+import android.widget.EditText
 
 
 import android.widget.LinearLayout
@@ -52,6 +54,17 @@ class MainActivity : AppCompatActivity() {
         check2 = findViewById(R.id.check2)
 
         deSerializer(this@MainActivity)
+
+//        try {
+//            val fis = openFileInput("dents.ser")
+//            val ois = ObjectInputStream(fis)
+//
+//            ois.use {
+//                var dent1 : Note = ois.readObject() as Note
+//
+//                (dent1.getchildAt(0) as EditText).setText(dent1.noDent.toString())
+//            }
+//        }
 
     }
 
