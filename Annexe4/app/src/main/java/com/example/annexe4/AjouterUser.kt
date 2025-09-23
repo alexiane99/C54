@@ -35,7 +35,7 @@ class AjouterUser : AppCompatActivity() {
         boutonConfirm.setOnClickListener(ec)
     }
 
-    fun getUsername() {
+    fun getUser() : Utilisateur {
 
         val retour = Intent()
         var newUser = Utilisateur(champPrenom.text.toString(), champNom.text.toString())
@@ -43,7 +43,7 @@ class AjouterUser : AppCompatActivity() {
         //setResult(Id, retour)
         //finish() // superposés, visuellement on revient à MainActivity
 
-        //return newUser // fichier util
+        return newUser // fichier util
 
     }
 
