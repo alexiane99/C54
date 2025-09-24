@@ -6,15 +6,19 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class AjouterUser : AppCompatActivity() {
+class IdentifyUtilisateur : AppCompatActivity() {
 
-    lateinit var boutonConfirm : Button
-    lateinit var champPrenom : TextView
-    lateinit var champNom : TextView
+    lateinit var boutonConfirm: Button
+    lateinit var champPrenom: TextView
+    lateinit var champNom: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,38 +34,21 @@ class AjouterUser : AppCompatActivity() {
         champPrenom = findViewById(R.id.prenom)
         champNom = findViewById(R.id.nom)
 
-        val ec = Ecouteur()
+        boutonConfirm.setOnClickListener {
 
-        boutonConfirm.setOnClickListener(ec)
-    }
+            val retour = Intent()
 
-    fun getUser() : Utilisateur {
+            var newUser = Utilisateur(champPrenom.text.toString(), champNom.text.toString())
 
-        val retour = Intent()
-        var newUser = Utilisateur(champPrenom.text.toString(), champNom.text.toString())
-        retour.putExtra("util", newUser)
-        //setResult(Id, retour)
-        //finish() // superposés, visuellement on revient à MainActivity
+            retour.putExtra("util", newUser) // permet de sauvegarder un objet dans un intent
+            setResult(RESULT_OK, retour)
+            finish() // superposés, visuellement on revient à MainActivity
 
-        return newUser // fichier util
-
-    }
-
-    inner class Ecouteur : View.OnClickListener { // lambda
-
-        override fun onClick(v: View?) {
-
-            when (v) {
-
-                boutonConfirm -> {
-
-                    val i = Intent(this@AjouterUser, MainActivity::class.java)
-                    startActivity(i)
-                }
-
-            }
         }
+
     }
+
+}
 
 //    inner class ActivResultCallBack
 //    OnActivityResult
@@ -70,4 +57,3 @@ class AjouterUser : AppCompatActivity() {
 //    if(intentRetour != null)
 //        if (Buil.VERSIONSDK.INT <= tirmisu)
 //            util = intentRertour.getSerializableExtra("util", Utilisateur::class.java)
-}
