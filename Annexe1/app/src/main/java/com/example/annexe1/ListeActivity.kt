@@ -42,9 +42,7 @@ class ListeActivity : AppCompatActivity() {
         // flux de données
 
         val fis = openFileInput("fichier.txt")
-
         val isr = InputStreamReader(fis)
-
         val br = BufferedReader(isr)
 
 //        val arrayliste = ArrayList<String>()
@@ -90,10 +88,6 @@ class ListeActivity : AppCompatActivity() {
 //
 //        }
 
-
     }
-
-
-
 
 }

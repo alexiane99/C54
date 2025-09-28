@@ -29,15 +29,19 @@ class AjouterActivity : AppCompatActivity() {
         champMemo = findViewById(R.id.champMemo)
 
         // simplification interface fonctionnelle + lambda + lambda comme dernier param -> à revoir
+        // on met toutes les actions dans le OnClickListener { }
+
         boutonAdd.setOnClickListener {
 
             var texteMemo = champMemo.text.toString()
-            // verifier si texteMemo est vide
 
+            // verifier si texteMemo est vide
             if (!texteMemo.isEmpty()) {
 
-                val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
-                val osw = OutputStreamWriter(fos)
+                // ouverture ou création du fichier binaire si n'existe pas
+                // append ajoute à la suite du contenu déjà là, ne va pas écraser le contenu
+                val fos = openFileOutput("fichier.txt", MODE_APPEND)
+                val osw = OutputStreamWriter(fos) // pour convertir un flux binaire en flux de caractères
                 val bw = BufferedWriter(osw)
 
                 bw.write(texteMemo)
