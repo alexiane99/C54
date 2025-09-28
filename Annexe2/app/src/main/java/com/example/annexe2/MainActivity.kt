@@ -26,8 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var texteDuree: TextView
     lateinit var texteNom: TextView;
 
-    lateinit var lanceur: ActivityResultLauncher<Intent>;
-
+    lateinit var lanceur: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         val ec = Ecouteur()
         bouton.setOnClickListener(ec)
-
-
+        
         // création du lanceur de boomerang, objet sera appelé au retour du boomerang dans cette classe
         lanceur = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
@@ -54,10 +52,45 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    inner class Ecouteur : View.OnClickListener {
+        override fun onClick(v: View?) {
+            rechercherFichiers()
+        }
+    }
 
+    // pour get le fichier MP3 dans l'activité
+    fun rechercherFichiers() {
+        // intent vers le téléphone
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.setType("audio/*") // ou text/* // fichiers musciaux
+        lanceur.launch(intent) // lance l'intent différemment qu'avec startActivity car on attend un résultat dans cette activité, affiche les fichiers musicaux
+    }
+
+    // Calculer le temps d'exécution avec et sans Buffer
+    fun tempsDeLecture(chemin: InputStream): String {
+
+        // Comparaison ici --sans Buffer (fis) et avec Buffer (bis)
+        val fis: FileInputStream = chemin as FileInputStream
+        val bis: BufferedInputStream = BufferedInputStream(fis)
+        var temps : Long = 0
+
+        bis.use { // fis.use
+
+            val debut = System.currentTimeMillis()
+            while (bis.read()!= - 1) { } //bis
+
+            val fin = System.currentTimeMillis()
+            temps = fin - debut
+        }
+
+        return temps.toString()
+    }
+
+    // RETOUR DU BOOMERANG
     inner class CallBackMusic : ActivityResultCallback<ActivityResult> {
-        override fun onActivityResult(result: ActivityResult) {
 
+        override fun onActivityResult(result: ActivityResult) {
 
             val intentRetour: Intent =
                 result.data!! // !! : certain que l'intent n'est pas nul car on fait une selection, si null quand même, va générer une exception, j'assume s il y a une erreur dans l'intent
@@ -67,61 +100,21 @@ class MainActivity : AppCompatActivity() {
                 contentResolver // objet permettant d'accéder aux données sur le téléphone ( méthodes CRUD ), présente les données sous forme de tables
 
             //nom du fichier
-            val cursor =
-                resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+            val cursor = resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
             cursor!!.moveToFirst()
             texteNom.text = cursor!!.getString(0)
-
 
             try {
                 // ouvrir un flux de données vers l'URI choisi
                 val stream = resolver.openInputStream(uri) //c'est un stream d'octets
 
-                texteDuree.text = "durée : ${tempsDeLecture(stream!!)}"
+                texteDuree.text = "durée : ${tempsDeLecture(stream!!)}" // voir fonction
+
             } catch (fnf: Exception) {
+
                 fnf.printStackTrace()
             }
-
         }
-
-    }
-
-    inner class Ecouteur : View.OnClickListener {
-        override fun onClick(v: View?) {
-            rechercherFichiers()
-        }
-
-    }
-
-    fun rechercherFichiers() {
-        // intent vers le téléphone
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.setType("audio/*") // ou text/* // fichiers musciaux
-        lanceur.launch(intent) // lance l'intent différemment qu'avec startActivity car on attend un résultat dans cette activité, affiche les fichiers musicaux
-    }
-
-
-    fun tempsDeLecture(chemin: InputStream): String {
-
-
-        // Comparaison ici --sans Buffer (fis) et avec Buffer (bis)
-        val fis: FileInputStream = chemin as FileInputStream
-        val bis: BufferedInputStream = BufferedInputStream(fis)
-        var temps : Long = 0
-
-        bis.use { // bis.use
-
-            val debut = System.currentTimeMillis()
-            while (bis.read()!= - 1) // bis
-            {
-
-            }
-
-            val fin = System.currentTimeMillis()
-            temps = fin - debut
-        }
-            return temps.toString()
 
     }
 }
