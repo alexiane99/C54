@@ -43,29 +43,36 @@ class MainActivity : AppCompatActivity() {
 
         // initialiser écouteur
 
-        val ec = Ecouteur()
+        //val ec = Ecouteur()
 
-        boutonGo.setOnClickListener(ec)
+        //boutonGo.setOnClickListener(ec)
 
         update()
-    }
 
-    inner class Ecouteur : View.OnClickListener {
+        boutonGo.setOnClickListener { // on peut aussi écrire directement car lambda
 
-        override fun onClick(v: View?) {
-
-            when(v) {
-
-                boutonGo -> {
-                    addNom()
-                    update()
-                }
-            }
+            addNom()
+            update()
         }
-
     }
 
-    fun update() {
+//    inner class Ecouteur : View.OnClickListener {
+//
+//        override fun onClick(v: View?) {
+//
+//            when(v) {
+//
+//                boutonGo -> {
+//                    addNom()
+//                    update()
+//                }
+//            }
+//        }
+//
+//    }
+
+
+    fun update() { // pour exécuter chacune des fonctions lorsqu'on ouvre le fichier
 
         countNbLignes()
         countNombreCaract()
@@ -76,9 +83,7 @@ class MainActivity : AppCompatActivity() {
     fun countNbLignes() {
 
         val fis = openFileInput("fichier.txt")
-
-        val isr = InputStreamReader(fis)
-
+        val isr = InputStreamReader(fis) // pour lire un flux de caractère
         val br = BufferedReader(isr)
 
         var nbLignes = 0
@@ -92,7 +97,8 @@ class MainActivity : AppCompatActivity() {
             // for (line in br.lines())
             // br.readLines().size -> compte le nb éléments
 
-            br.forEachLine { nbLignes += 1 } // va aussi fermer le br lorsque la tâche est terminée
+            br.forEachLine { nbLignes += 1 }
+            // va aussi fermer le br lorsque la tâche est terminée, car fct lambda
         }
 
         nbLine.text = nbLignes.toString()
@@ -102,9 +108,7 @@ class MainActivity : AppCompatActivity() {
     fun countNombreCaract(){
 
         val fis = openFileInput("fichier.txt")
-
         val isr = InputStreamReader(fis)
-
         val br = BufferedReader(isr)
 
         var sumCaractLignes = 0
@@ -120,7 +124,6 @@ class MainActivity : AppCompatActivity() {
                 sumCaractLignes += ligne.length
             }
 
-
         }
 
         nbCaract.text = sumCaractLignes.toString()
@@ -130,15 +133,12 @@ class MainActivity : AppCompatActivity() {
     fun countNombreC() {
 
         val fis = openFileInput("fichier.txt")
-
         val isr = InputStreamReader(fis)
-
         val br = BufferedReader(isr)
 
         var nombreC = 0
 
         br.use {
-
 
             br.forEachLine { ligne ->
 
@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
         if (nom.isNotEmpty()) {
 
             val fos = openFileOutput("fichier.txt", MODE_APPEND) // append ajoute à la suite du contenu déjà là
-            val osw = OutputStreamWriter(fos)
+            val osw = OutputStreamWriter(fos) // pour modifier un flux de caractères
             val bw = BufferedWriter(osw)
 
             bw.write(nom)
@@ -183,14 +183,12 @@ class MainActivity : AppCompatActivity() {
             champNom.text.clear()
 
             //finish()
-
         }
     }
 
     fun countNbMots() {
 
         // Les scanners utilisent des jetons (ou tokens)
-
         // caract blanc -> est le delimiter par défaut d'un scanner
 
         var nbMots = 0
@@ -199,19 +197,17 @@ class MainActivity : AppCompatActivity() {
 
         fis.use {
 
-            val scanner = Scanner(fis) // on n'appelle pas useDelimiter car on veut un caract blanc
+            val scanner = Scanner(fis)
+            // on n'appelle pas useDelimiter car on veut un caract blanc
 
             while(scanner.hasNext()) {
 
                 nbMots++
-
                 scanner.next()
             }
 
             //            val line = scanner.nextLine()
-            //
             //            val mots = line.trim().split("\\s+") // n'est pas nécessaire normalement car delimiter est caract blanc par défaut
-            //
             //            nbMots = mots.size
 
         }

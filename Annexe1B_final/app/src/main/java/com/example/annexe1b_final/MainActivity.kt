@@ -79,9 +79,7 @@ class MainActivity : AppCompatActivity() {
         val fis = openFileInput("planetes.txt")
 
         //val fis = getResources().openRawResource(R.raw.planetes)
-
         //val isr = InputStreamReader(fis)
-
         //val br = BufferedReader(isr)
 
 
@@ -96,7 +94,6 @@ class MainActivity : AppCompatActivity() {
             while(scanner.hasNextLine()) {
 
 //                val planete = scanner.nextLine()
-//
 //                val nbSatell = scanner.nextInt()
 
 
@@ -116,7 +113,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
 //                while(scanner.hasNext() {
-//
 //                    var temp = Planete(scanner.next(), scanner.nextInt()) // ou has.next() as Int
 //                        vector.add(temp)
 //                    })
