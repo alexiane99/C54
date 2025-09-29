@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // savedInstanceStates
+    // savedInstanceStates 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
 
