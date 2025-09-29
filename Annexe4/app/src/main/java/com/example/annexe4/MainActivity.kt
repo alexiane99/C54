@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var champTexte : TextView
 
     var util : Utilisateur? = null
-    val lanceur: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), CallBackUtilisateur())
+    val lanceur: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(), CallBackUtilisateur())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,12 +60,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // savedInstanceState
-
+    // savedInstanceStates
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        // conserver l'utilisateur
 
+        // conserver l'utilisateur
         outState.putSerializable("util",util)
     }
 
