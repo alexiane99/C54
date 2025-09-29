@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var note2 : TextView
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -68,19 +67,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // Enregistrement des infos dans le fichier de sérialisation
     fun serialiserNote(contexte : Context) {
 
         val fos = contexte.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
         val oos = ObjectOutputStream(fos)
 
         var note1 = Note(noDent1.text.toString(), check1.isChecked, note1.text.toString())
-
         var note2 = Note(noDent2.text.toString(), check2.isChecked, note2.text.toString())
 
         var liste = ArrayList<Note>()
-
         liste.add(note1)
-
         liste.add(note2)
 
         oos.use {
@@ -105,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
            ois.use {
 
-               l = ois.readObject() as ArrayList<Note>
+               l = ois.readObject() as ArrayList<Note> // pour transtyper
 
                if(l.isNotEmpty()) {
 
@@ -140,6 +137,7 @@ class MainActivity : AppCompatActivity() {
        }
        catch(fnfe: FileNotFoundException) {
 
+           // s'il n'y a pas d'infos à afficher, on passe ici
            Toast.makeText(this@MainActivity, "Il n'y a pas de fichier de sérialisation", Toast.LENGTH_LONG).show()
 
        }
