@@ -79,6 +79,7 @@ class AjouterActivity : AppCompatActivity() {
     inner class Ecouteur : OnClickListener, OnDateSetListener {
 
         override fun onClick(v: View?) {
+
             if (v == boutonEcheance) {
 
                 val d = DatePickerDialog(this@AjouterActivity)
@@ -91,19 +92,15 @@ class AjouterActivity : AppCompatActivity() {
             else // bouton Ajouter
             {
                 //Créer un objet mémo et l'ajouter dans la liste du singleton
-
                 SingletonMemos.ajouterMemo(Memo(champMemo.text.toString(), dateChoisie))//LocalDate.parse(champDate.text.toString())
 
                 // mettre à jour ici le fichier de sérialisation
-
                 SingletonMemos.serialiserListe(this@AjouterActivity)
 
                 champMemo.text.clear()
                 champDate.text = ""
 
                finish()
-
-                // ajouter le memo dans la liste du singleton
             }
 
         }
@@ -111,7 +108,6 @@ class AjouterActivity : AppCompatActivity() {
         override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
             // aller chercher le message et le localDate
-
             dateChoisie = LocalDate.of(year, month+1, dayOfMonth) // attention, commence à zéro!!
 
             champDate.setText(dateChoisie.toString())

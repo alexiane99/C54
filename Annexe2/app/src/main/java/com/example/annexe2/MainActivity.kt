@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         val ec = Ecouteur()
         bouton.setOnClickListener(ec)
-        
+
         // création du lanceur de boomerang, objet sera appelé au retour du boomerang dans cette classe
         lanceur = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),

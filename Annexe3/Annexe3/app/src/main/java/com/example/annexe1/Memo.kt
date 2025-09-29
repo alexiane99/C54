@@ -5,5 +5,4 @@ import java.time.LocalDate
 
 data class Memo (var message: String, var echeance: LocalDate) : Serializable {
 
-
 }
