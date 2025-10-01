@@ -174,25 +174,35 @@ class MainActivity : AppCompatActivity() {
 
         if(listeProduits.isNotEmpty()) {
 
-           // var listeTemp = ArrayList<String>()
+            listeProduits.sortWith(compareBy{it.prix})
 
-            for(i in 0 until listeProduits.size)   {
+            for (produit in listeProduits) {
 
-                if (listeProduits.elementAt(i).nom == nomProd) {
+                if (produit.nom == nomProd) {
 
-                    for(j in i until listeProduits.size) // 2e boucle pour vérifier et comparer les autres items du même type
-
-                        if (listeProduits.elementAt(i).prix < listeProduits.elementAt(j).prix)
-
-                            listeProduits[i] = Produit(
-                                listeProduits.elementAt(i).nom,
-                                listeProduits.elementAt(i).prix,
-                                listeProduits.elementAt(i).epicerie
-                            )
-
-                            produitAubaine = listeProduits[i]
+                    produitAubaine = produit
                 }
             }
+
+           // var listeTemp = ArrayList<String>()
+
+//            for(i in 0 until listeProduits.size)   {
+//
+//                if (listeProduits.elementAt(i).nom == nomProd) {
+//
+//                    for(j in i until listeProduits.size) // 2e boucle pour vérifier et comparer les autres items du même type
+//
+//                        if (listeProduits.elementAt(i).prix < listeProduits.elementAt(j).prix)
+//
+//                            listeProduits[i] = Produit(
+//                                listeProduits.elementAt(i).nom,
+//                                listeProduits.elementAt(i).prix,
+//                                listeProduits.elementAt(i).epicerie
+//                            )
+//
+//                            produitAubaine = listeProduits[i]
+//                }
+//            }
 
         }
 
