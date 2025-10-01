@@ -64,7 +64,7 @@ class ListeActivity : AppCompatActivity() {
     fun lireMemos() : ArrayList<String>? {
 
         //var v : ArrayList<Memo>? = null
-        var triee : ArrayList<String>? = null
+        var triee : ArrayList<String>? = null 
 
         try {
             var v = SingletonMemos.recupererListe(this@ListeActivity) // qui vient du singleton
