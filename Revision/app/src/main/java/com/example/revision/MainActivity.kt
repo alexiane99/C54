@@ -1,8 +1,10 @@
 package com.example.revision
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,12 +13,18 @@ import androidx.core.view.WindowInsetsCompat
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.io.InputStreamReader
 import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Scanner
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var lastActivity : TextView
+    lateinit var counter : TextView
     lateinit var liste : ListView
 
     var listeLangages = ArrayList<Langage>()
@@ -32,8 +40,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         liste = findViewById(R.id.liste)
+        counter = findViewById(R.id.counter)
+        lastActivity = findViewById(R.id.lastActivity)
 
         liste.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, lireListe()))
+
+        counter.text = countInexistants2012().toString()
+
+        deSerializer(this@MainActivity)
     }
 
     fun lireListe() : ArrayList<Langage> { // pour afficher liste
@@ -80,6 +94,76 @@ class MainActivity : AppCompatActivity() {
 
         return listeLangages
 
+    }
+
+    fun countInexistants2012() : Int {
+
+        var counter : Int = 0
+
+        if(listeLangages.isNotEmpty()) {
+
+
+            for(i in 0 until listeLangages.size) {
+
+                if(listeLangages[i].rang2012 == "99") {
+
+                    counter++
+                }
+            }
+        }
+
+        return counter
+
+    }
+
+    fun serialiserActivity(contexte: Context) {
+
+        val fos = contexte.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
+        val oos = ObjectOutputStream(fos)
+
+        var dateTime = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss")
+
+        oos.use {
+
+            oos.writeObject(dateTime.format(formatter))
+        }
+    }
+
+    override fun onStop() { // Ctrl + O pour générer le onStop
+
+        super.onStop()
+
+        try {
+            serialiserActivity(this@MainActivity) // écrire ici la méthode dans le try catch
+        }
+        catch (io: IOException) {
+
+            io.printStackTrace()
+        }
+    }
+
+    fun deSerializer(contexte : Context) {
+
+        try {
+            val fis = contexte.openFileInput("serialisation.ser")
+            val ois = ObjectInputStream(fis)
+
+            ois.use {
+
+                var dateTime = ois.readObject()
+
+                lastActivity.text = dateTime.toString()
+
+            }
+        }
+        catch(fnfe: FileNotFoundException) {
+
+            // s'il n'y a pas d'infos à afficher, on passe ici
+            Toast.makeText(this@MainActivity, "Il n'y a pas de fichier de sérialisation", Toast.LENGTH_LONG).show()
+
+        }
     }
 
 }

@@ -48,4 +48,5 @@ object SingletonMemos {
 
         return ArrayList(liste) // on retourne une copie de sécurité de notre liste
     }
+
 }
