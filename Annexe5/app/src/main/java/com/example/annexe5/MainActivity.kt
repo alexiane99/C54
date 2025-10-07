@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         //liste.setOnItemClickListener(ec) // java
         liste.onItemClickListener = ec // kotlin
 
-
         // autre méthode avec lambda, moins avantageux car doit réutiliser les paramètres
 
 //        liste.setOnItemClickListener { _, view : View?, position: Int, _ ->
@@ -66,8 +65,6 @@ class MainActivity : AppCompatActivity() {
     inner class Ecouteur : AdapterView.OnItemClickListener {
 
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-
 
 //            val selectedSong = v.get(position)
 //            val nomChanson = selectedSong["nom"] as String // kotlin style
@@ -91,20 +88,25 @@ class MainActivity : AppCompatActivity() {
         var listeDonnes = ArrayList<HashMap<String, Any>>()
 
         var chanson = HashMap<String, Any>()
-
-        //chanson.put("position", 3)
-        chanson["position"] = 3
-
+        chanson["position"] = 3 //chanson.put("position", 3)
         chanson["nom"] = "Touch Me"
         chanson["date"] = "22/03/86"
         chanson["image"] = R.drawable.touchme
-
         listeDonnes.add(chanson)
 
-        chanson = HashMap()
-        chanson["position"] = 3
-        chanson["date"] = "22/03/86"
-        chanson["image"] = R.drawable.touchme
+        chanson = HashMap() // création d'un nouveau hashmap car sinon va écraser l'autre
+        chanson["position"] = 31
+        chanson["nom"] = "Nothing's Gonna Stop Me Now"
+        chanson["date"] = "22/03/1992"
+        chanson["image"] = R.drawable.nothing
+        listeDonnes.add(chanson)
+
+        chanson = HashMap() // java style
+        chanson.put("position", 108)
+        chanson["nom"] = "Hot Body"
+        chanson["date"] = "15/07/88"
+        chanson.put("image", R.drawable.hotboy)
+        listeDonnes.add(chanson)
 
         return listeDonnes
     }
