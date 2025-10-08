@@ -17,6 +17,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    lateinit var playerview: PlayerView // lateinit pour les composants graphiques
+
+    var player : ExoPlayer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -37,17 +41,13 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        playerview = findViewById(R.id.player_view)
 
-
+        player = ExoPlayer.Builder(this@MainActivity).build()
     }
 
     override fun onStart() {
         super.onStart()
-
-        val player = ExoPlayer.Builder(this@MainActivity).build()
-
-        val playerview : PlayerView
-        playerview = findViewById(R.id.player_view)
 
         // Bind the player to the view
         playerview.player = player
@@ -56,20 +56,22 @@ class MainActivity : AppCompatActivity() {
 
         // Build the media item
         val mediaItem = MediaItem.fromUri(mp3url)
-        player.setMediaItem(mediaItem)
-        player.prepare()
+        player?.setMediaItem(mediaItem)
+        player?.prepare()
+        player?.play()
 
-        var onPlay : Boolean = false
 
-        playerview.setOnClickListener {
-
-            if(!onPlay) {
-                player.play()
-                onPlay = true
-            }
-
-            player.pause()
-        }
+//        var onPlay : Boolean = false
+//
+//        playerview.setOnClickListener {
+//
+//            if(!onPlay) {
+//                player?.play()
+//                onPlay = true
+//            }
+//
+//            player?.pause()
+//        }
 
     }
 

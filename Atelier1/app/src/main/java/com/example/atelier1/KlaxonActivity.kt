@@ -46,7 +46,9 @@ class KlaxonActivity : AppCompatActivity() {
                     Toast.makeText(this@KlaxonActivity, "Response ${li.articles.size}", LENGTH_LONG).show()
                     // decomposerReponse()
             },
-            { Toast.makeText(this, "ereur", Toast.LENGTH_LONG).show() })
+            { Toast.makeText(this, "erreur", Toast.LENGTH_LONG).show() })
+
+        // reste à prendre la liste et la convertir dans un simple adapter
 
         queue.add(stringRequest) // ne pas oublier d'ajouter la requête
     }

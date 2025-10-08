@@ -40,7 +40,10 @@ class JSONObjectActivity : AppCompatActivity() {
 
         liste = findViewById(R.id.liste)
 
-        val jsonRequest = JsonObjectRequest(
+        val jsonRequest = JsonObjectRequest( // object car { }
+            // si [ ], alors JSONArrayRequest
+            // request.getJSONArray
+            // getJSONObject
             Request.Method.GET, url, null,
             {
                 response ->
