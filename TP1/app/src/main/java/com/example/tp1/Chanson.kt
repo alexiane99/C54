@@ -7,9 +7,8 @@ data class Chanson (val id : String,
                     val genre : String,
                     val source: String,
                     val image: String,
-                    val trackNumber : String,
-                    val totalTrackNumber : Int,
-                    val totalTrackcount: Int,
+                    val trackNumber : Int,
+                    val totalTrackCount: Int,
                     val duration : Int,
                     val site : String){
 }
