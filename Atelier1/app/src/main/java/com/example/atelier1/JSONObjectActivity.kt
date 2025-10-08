@@ -51,7 +51,7 @@ class JSONObjectActivity : AppCompatActivity() {
                     decomposerReponse(tab)
 
            },
-            { Toast.makeText(this,"ereur", Toast.LENGTH_LONG).show()} )
+            { Toast.makeText(this,"erreur", Toast.LENGTH_LONG).show()} )
 
         queue.add(jsonRequest) // ne pas oublier d'ajouter la requête
 
