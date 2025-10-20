@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
 
                 val ligne = scanner.nextLine()
 
-                val produit = ligne.trim().split(",")
+                val produit = ligne.trim().split(",") // et \n
 
                 if(produit.size == 3) {
 
@@ -171,6 +171,14 @@ class MainActivity : AppCompatActivity() {
     fun trouverAubaine(nomProd : String) : Produit {
 
         var produitAubaine = Produit("", 0.00, "")
+
+        // méthode pour trier directement
+
+        // méthode Eric
+        // 1 set meilleure prix et meilleurObject = null
+        // if object.prix < meilleurPrix
+        // set meilleurPrix = objet.prix
+        // meilleurObjet = objet
 
         if(listeProduits.isNotEmpty()) {
 
