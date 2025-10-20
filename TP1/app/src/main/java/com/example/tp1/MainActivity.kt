@@ -24,15 +24,11 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var liste : ListView
 
-    val url = "https://api.jsonbin.io/v3/b/680a6a1d8561e97a5006b822?meta=false"
-
 //    val lanceur: ActivityResultLauncher<Intent> = registerForActivityResult(
 //        ActivityResultContracts.StartActivityForResult(), Klaxon())
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        val queue = Volley.newRequestQueue(this)
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,51 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         //lanceur.launch(Intent(this@MainActivity, Klaxon::class.java)) // appelle java
 
-        val stringRequest = StringRequest( // stringRequest?
-
-            Request.Method.GET, url,
-            { response ->
-
-                val li: ListeMusique =
-                    Klaxon().parse<ListeMusique>(response) ?: ListeMusique() // pour se débarrasser du ?
-
-               Toast.makeText(this@MainActivity, "Response ${li.listeMusique.size}", LENGTH_LONG).show()
-                println(li.listeMusique.size)
-            },
-            {
-                Toast.makeText(this, "erreur", LENGTH_LONG).show()
-            }
-        )
-
-        queue.add(stringRequest) // ne pas oublier d'ajouter la requête
-    }
-
-    fun decomposerReponse(li) {
-
-        val remplir = ArrayList<HashMap<String, String>>()
-
-        for(i in 0 ..li.length() - 1) {
-
-            // java style
-            var temp = HashMap<String, String>()
-            temp.put("id", li.getStringObject(i).get("id"),
-            temp.put("title", li.getStringObject(i).get("title"),
-            temp.put("album", li.getStringObject(i).get("album"),
-            temp.put("artist", li.getStringObject(i).get("artist"),
-            temp.put("genre", li.getStringObject(i).get("genre"),
-            temp.put("source", li.getStringObject(i).get("source"),
-            temp.put("image", li.getStringObject(i).get("image"),
-            temp.put("trackNumber", li.getStringObject(i).get("trackNumber"),
-            temp.put("totalTrackCount", li.getStringObject(i).get("totalTrackcount"),
-            temp.put("duration", li.getStringObject(i).get("duration"),
-            temp.put("site", li.getStringObject(i).get("site"),
-            remplir.add(temp),
-        }
-
-        val adapt = SimpleAdapter(this, remplir,R.layout.chanson, arrayOf("nom", "prix"),intArrayOf(R.id.texteNom, R.id.textePrix) )
-
-        // le lier au listview
-        liste.adapter = adapt
-
+        Modele()
+//
+//        val adapt = SimpleAdapter(this, remplir,R.layout.chanson, arrayOf("nom", "prix"),intArrayOf(R.id.texteNom, R.id.textePrix) )
+//
+//        // le lier au listview
+//        liste.adapter = adapt
+//
     }
 }

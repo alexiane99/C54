@@ -11,7 +11,7 @@ import com.android.volley.toolbox.Volley
 import com.beust.klaxon.Klaxon
 
 //class Klaxon() : ActivityResultCallback<ActivityResult> {
-
+//
 //    val url = "https://api.jsonbin.io/v3/b/680a6a1d8561e97a5006b822?meta=false"
 //
 //    override fun onActivityResult(result:ActivityResult) {
