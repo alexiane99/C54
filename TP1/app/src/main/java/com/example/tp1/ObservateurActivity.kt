@@ -11,7 +11,8 @@ import androidx.core.view.WindowInsetsCompat
 
 class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
-    var leModele: Sujet? = null
+
+    //var leModele: Sujet? = null
 
     lateinit var playlistView : ListView
 
@@ -33,17 +34,22 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
         playlistView = findViewById(R.id.liste)
 
+        Modele.ajouterObservateur(this) // on ajouter l'observateur ( l'activité ) au modèle ( le sujet ); toujours avant
+        Modele.init(applicationContext)
+
+
+
+
     }
 
     override fun onStart() {
         super.onStart()
-        leModele = Modele
-        (leModele as Modele).ajouterObservateur(this) // on ajouter l'observateur ( l'activité ) au modèle ( le sujet )
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        leModele!!.enleverObservateur(this)
+        Modele.enleverObservateur(this)
     }
 
     override fun changement(estRempli: Int) {
@@ -57,7 +63,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         val listeTemp = ArrayList<HashMap<String, Any>>()
 
         val listeChansons = Modele.playlist.listeMusique
-        for(i in 0 ..listeChansons.size) {
+        for(i in 0 ..listeChansons.size - 1) {
 
             // java style
             var temp = HashMap<String, Any>()
@@ -84,8 +90,8 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
         p = remplirArrayList()
 
-        val adapt = SimpleAdapter(this, p,R.layout.chanson, arrayOf("title", "artist"),intArrayOf(
-            androidx.core.R.id.title, R.id.genre) )
+        val adapt = SimpleAdapter(this, p, R.layout.titre_playlist, arrayOf("title", "artist", "album"),intArrayOf(
+            androidx.core.R.id.title) )
 
         // le lier au listview
         playlistView.adapter = adapt
