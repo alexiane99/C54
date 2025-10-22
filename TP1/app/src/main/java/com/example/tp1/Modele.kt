@@ -29,6 +29,7 @@ class Modele : Sujet {
                     Klaxon().parse<ListeMusique>(response) ?: ListeMusique() // pour se débarrasser du ?
 
                 Toast.makeText(context, "Response ${li.listeMusique.size}", LENGTH_LONG).show()
+
                 println(li.listeMusique.size)
             },
             {
