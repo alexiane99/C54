@@ -14,7 +14,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
     //var leModele: Sujet? = null
 
-    lateinit var playlistView : ListView
+    lateinit var liste : ListView
 
     var p : ArrayList<HashMap<String, Any>> = ArrayList()
 
@@ -32,7 +32,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
             insets
         }
 
-        playlistView = findViewById(R.id.liste)
+        liste= findViewById(R.id.liste)
 
         Modele.ajouterObservateur(this) // on ajouter l'observateur ( l'activité ) au modèle ( le sujet ); toujours avant
         Modele.init(applicationContext)
@@ -90,10 +90,10 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
         p = remplirArrayList()
 
-        val adapt = SimpleAdapter(this, p, R.layout.titre_playlist, arrayOf("title", "artist", "album"),intArrayOf(
-            androidx.core.R.id.title) )
+        val adapt = SimpleAdapter(this, p, R.layout.titre_playlist, arrayOf("title, artist, album"),
+            intArrayOf(R.id.titreTexte, R.id.artisteText, R.id.albumText))
 
         // le lier au listview
-        playlistView.adapter = adapt
+        liste.adapter = adapt
     }
 }
