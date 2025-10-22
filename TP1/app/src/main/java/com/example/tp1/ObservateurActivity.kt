@@ -90,7 +90,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
         p = remplirArrayList()
 
-        val adapt = SimpleAdapter(this, p, R.layout.titre_playlist, arrayOf("title, artist, album"),
+        val adapt = SimpleAdapter(this, p, R.layout.titre_playlist, arrayOf("title", "artist", "album"),
             intArrayOf(R.id.titreTexte, R.id.artisteText, R.id.albumText))
 
         // le lier au listview
