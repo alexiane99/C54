@@ -23,12 +23,6 @@ import org.json.JSONArray
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var liste : ListView
-
-//    val lanceur: ActivityResultLauncher<Intent> = registerForActivityResult(
-//        ActivityResultContracts.StartActivityForResult(), Klaxon())
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -40,16 +34,5 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        liste = findViewById(R.id.liste)
-
-        //lanceur.launch(Intent(this@MainActivity, Klaxon::class.java)) // appelle java
-
-        Modele()
-//
-//        val adapt = SimpleAdapter(this, remplir,R.layout.chanson, arrayOf("nom", "prix"),intArrayOf(R.id.texteNom, R.id.textePrix) )
-//
-//        // le lier au listview
-//        liste.adapter = adapt
-//
     }
 }

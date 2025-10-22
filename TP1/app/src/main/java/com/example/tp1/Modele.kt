@@ -8,10 +8,12 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.beust.klaxon.Klaxon
 
-class Modele : Sujet {
+object Modele : Sujet { // Singleton
 
     private var valeur = 0
     private var obs: ObservateurChangement? = null // c'est un observateur, il pourrait en avoir plusieurs
+    lateinit var playlist : ListeMusique
+
 
     val url = "https://api.jsonbin.io/v3/b/680a6a1d8561e97a5006b822?meta=false"
 
@@ -31,6 +33,8 @@ class Modele : Sujet {
                 Toast.makeText(context, "Response ${li.listeMusique.size}", LENGTH_LONG).show()
 
                 println(li.listeMusique.size)
+
+                playlist = li
             },
             {
                 Toast.makeText(context, "erreur", LENGTH_LONG).show()
@@ -39,9 +43,9 @@ class Modele : Sujet {
 
         queue.add(stringRequest) // ne pas oublier d'ajouter la requête
 
-        valeur = 1
+        setValeur(1)
 
-        avertirObservateurs()
+
     }
 
 
@@ -70,5 +74,6 @@ class Modele : Sujet {
     override fun avertirObservateurs() {
         obs!!.changement(valeur) // important
     }
+
 
 }

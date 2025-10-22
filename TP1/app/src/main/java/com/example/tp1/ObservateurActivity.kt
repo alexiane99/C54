@@ -2,23 +2,20 @@ package com.example.tp1
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ListView
 import android.widget.SimpleAdapter
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.beust.klaxon.Klaxon
-import com.google.common.collect.Queues
-import java.util.Queue
 
 class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
     var leModele: Sujet? = null
+
+    lateinit var playlistView : ListView
+
+    var p : ArrayList<HashMap<String, Any>> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,11 +30,14 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        playlistView = findViewById(R.id.liste)
+
     }
 
     override fun onStart() {
         super.onStart()
-        leModele = Modele()
+        leModele = Modele
         (leModele as Modele).ajouterObservateur(this) // on ajouter l'observateur ( l'activité ) au modèle ( le sujet )
     }
 
@@ -48,39 +48,46 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
     override fun changement(estRempli: Int) {
 
-
-
+        remplirListeView()
 
     }
 
-    fun decomposerReponse(li : Queue<String>) {
+    fun remplirArrayList() : ArrayList<HashMap<String, Any>> {
 
-//        val remplir = ArrayList<HashMap<String, Chanson>>()
-//
-//        for(i in 0 ..li.size) {
-//
-//            // java style
-//            var temp = HashMap<String, Chanson>()
-//            temp.put("id", li.add("id").toString())
+        val listeTemp = ArrayList<HashMap<String, Any>>()
 
-//            val id : String,
-//            val title :String,
-//            val album: String,
-//            val artist: String,
-//            val genre : String,
-//            val source: String,
-//            val image: String,
-//            val trackNumber : Int,
-//            val totalTrackCount: Int,
-//            val duration : Int,
-//            val site : String){
-            }
-//            remplir.add(temp)
-        //}
+        val listeChansons = Modele.playlist.listeMusique
+        for(i in 0 ..listeChansons.size) {
 
-//        val adapt = SimpleAdapter(this, remplir,R.layout.accessoires, arrayOf("nom", "prix"),intArrayOf(R.id.texteNom, R.id.textePrix) )
-//
-//        // le lier au listview
-//        liste.adapter = adapt
-   // }
+            // java style
+            var temp = HashMap<String, Any>()
+            temp.put("id", listeChansons.get(i).id)
+            temp.put("title", listeChansons.get(i).title)
+            temp.put("album", listeChansons.get(i).album)
+            temp.put("artist", listeChansons.get(i).artist)
+            temp.put("genre", listeChansons.get(i).genre)
+            temp.put("source", listeChansons.get(i).source)
+            temp.put("image", listeChansons.get(i).image)
+            temp.put("trackNumber", listeChansons.get(i).trackNumber.toString())
+            temp.put("totalTrackcount", listeChansons.get(i).totalTrackCount.toString())
+            temp.put("duration", listeChansons.get(i).duration.toString())
+            temp.put("site", listeChansons.get(i).site)
+
+            listeTemp.add(temp)
+        }
+
+        return listeTemp
+
+    }
+
+    fun remplirListeView() {
+
+        p = remplirArrayList()
+
+        val adapt = SimpleAdapter(this, p,R.layout.chanson, arrayOf("title", "artist"),intArrayOf(
+            androidx.core.R.id.title, R.id.genre) )
+
+        // le lier au listview
+        playlistView.adapter = adapt
+    }
 }
