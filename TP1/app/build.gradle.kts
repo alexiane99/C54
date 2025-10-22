@@ -7,6 +7,9 @@ android {
     namespace = "com.example.tp1"
     compileSdk = 35
 
+    viewBinding {
+        enable = true
+    }
     defaultConfig {
         applicationId = "com.example.tp1"
         minSdk = 26
@@ -33,6 +36,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
 }
 
 dependencies {
