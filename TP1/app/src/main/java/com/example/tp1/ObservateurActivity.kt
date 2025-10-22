@@ -2,6 +2,7 @@ package com.example.tp1
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.SimpleAdapter
 import androidx.activity.enableEdgeToEdge
@@ -95,5 +96,20 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
         // le lier au listview
         liste.adapter = adapt
+
+        // inner class MonAdapter(context: Context, data: List<Map<String, Any>>, resource: Int, from: Array<String>, to: IntArray) : SimpleAdapter(context, data, resource, from, to)
     }
+
+//    class Glide {
+//
+//        open fun setViewImage( v: ImageView, value : String)  {
+//
+//            Glide.with(this).load(value).into(v)
+//
+//    Glide.with(fragment)
+//    .load(url)
+//    .into(imageView);
+//        }
+//
+//    }
 }
