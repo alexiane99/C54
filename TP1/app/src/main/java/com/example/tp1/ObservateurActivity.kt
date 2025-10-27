@@ -1,5 +1,6 @@
 package com.example.tp1
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -9,6 +10,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
+import com.example.tp1.Modele.url
+import kotlinx.coroutines.flow.internal.NoOpContinuation.context
+import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
@@ -100,16 +105,25 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         // inner class MonAdapter(context: Context, data: List<Map<String, Any>>, resource: Int, from: Array<String>, to: IntArray) : SimpleAdapter(context, data, resource, from, to)
     }
 
-//    class Glide {
-//
-//        open fun setViewImage( v: ImageView, value : String)  {
-//
+    open class SimpleAdapter(context : Context) {
+
+        open fun setViewImage( v: ImageView, value : String) : Unit  {
+
 //            Glide.with(this).load(value).into(v)
 //
-//    Glide.with(fragment)
-//    .load(url)
-//    .into(imageView);
-//        }
 //
-//    }
+//            Glide.with(fragment)
+//                    .load(url)
+//                    .into(imageView);
+
+        }
+
+    }
+
+    open class CountDownTimer() {
+
+       // var updateSecondes = MonTimer(nombre de ms avant la fin du timer, invervalle entre chaque tic)
+
+    }
+
 }
