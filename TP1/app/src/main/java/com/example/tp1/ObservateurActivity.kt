@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideContext
 import com.example.tp1.Modele.url
-import kotlinx.coroutines.flow.internal.NoOpContinuation.context
-import kotlin.coroutines.jvm.internal.CompletedContinuation.context
+
 
 class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
@@ -23,6 +23,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
     lateinit var liste : ListView
 
     var p : ArrayList<HashMap<String, Any>> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -96,8 +97,8 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
         p = remplirArrayList()
 
-        val adapt = SimpleAdapter(this, p, R.layout.titre_playlist, arrayOf("title", "artist", "album"),
-            intArrayOf(R.id.titreTexte, R.id.artisteText, R.id.albumText))
+        val adapt = myAdapter(this, p, R.layout.titre_playlist, arrayOf("title", "artist", "album", "image"),
+            intArrayOf(R.id.titreTexte, R.id.artisteText, R.id.albumText, R.id.texteCover))
 
         // le lier au listview
         liste.adapter = adapt
@@ -105,16 +106,12 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         // inner class MonAdapter(context: Context, data: List<Map<String, Any>>, resource: Int, from: Array<String>, to: IntArray) : SimpleAdapter(context, data, resource, from, to)
     }
 
-    open class SimpleAdapter(context : Context) {
+    inner class myAdapter(context : Context, data: MutableList<out MutableMap<String, Any>>, resource: Int, from: Array<String>, to: IntArray) : SimpleAdapter(context, data, resource, from, to) {
 
-        open fun setViewImage( v: ImageView, value : String) : Unit  {
+        override fun setViewImage( v: ImageView, value : String) : Unit  {
 
-//            Glide.with(this).load(value).into(v)
-//
-//
-//            Glide.with(fragment)
-//                    .load(url)
-//                    .into(imageView);
+
+            Glide.with(this@ObservateurActivity).load(value).into(v)
 
         }
 
