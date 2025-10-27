@@ -1,8 +1,12 @@
 package com.example.tp1
 
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.SimpleAdapter
@@ -44,9 +48,9 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         Modele.ajouterObservateur(this) // on ajouter l'observateur ( l'activité ) au modèle ( le sujet ); toujours avant
         Modele.init(applicationContext)
 
+        val ec = Ecouteur()
 
-
-
+        liste.onItemClickListener = ec
     }
 
     override fun onStart() {
@@ -114,6 +118,16 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
             Glide.with(this@ObservateurActivity).load(value).into(v)
 
         }
+
+    }
+
+    inner class Ecouteur : OnItemClickListener {
+        override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            val i : Intent = Intent(this@ObservateurActivity, PlayerActivity::class.java) // on va ouvrir le player ici
+            startActivity(i);
+        }
+
 
     }
 
