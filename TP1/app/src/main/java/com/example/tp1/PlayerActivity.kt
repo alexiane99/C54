@@ -1,47 +1,142 @@
 package com.example.tp1
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.view.View
+import android.view.View.OnClickListener
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.iterator
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.tp1.databinding.PlayerActivityBinding
-
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: PlayerActivityBinding
 
     lateinit var playerview : PlayerView
+    lateinit var parent: LinearLayout
+    lateinit var title : TextView
+    lateinit var artiste : TextView
+    lateinit var boutonPlay : ImageView
+    lateinit var boutonPause : ImageView
+    lateinit var boutonPrevious : ImageView
+    lateinit var boutonNext : ImageView
+
+    var chanson : Chanson? = null
+    var playlist = Modele.playlist.listeMusique
+
     var player : ExoPlayer? = null
     var url : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val chanson = intent.getParcelableExtra<Chanson>("chanson")
+        chanson = intent.getParcelableExtra<Chanson>("chanson")
 
         url = chanson!!.source
 
-        binding = PlayerActivityBinding.inflate(layoutInflater)
+        //binding = PlayerActivityBinding.inflate(layoutInflater)
         setContentView(R.layout.chanson) //(binding.root) #pour afficher la page
 
         playerview = findViewById(R.id.player_view)
 
         player = ExoPlayer.Builder(this@PlayerActivity).build()
 
+        playerview.player = player
+
+//        val playlist = Modele.playlist.listeMusique.map { chanson ->
+//            MediaItem.fromUri(chanson.source)
+//        }
+//        player.setMediaItems(playlist)
+
         playerview.setUseController(false); // on annule l'utilisation des boutons
 
+
+        parent = findViewById(R.id.chanson)
+        title = findViewById(R.id.texteTitre)
+        artiste = findViewById(R.id.texteArtiste)
+
+        boutonPlay = findViewById(R.id.boutonPlay)
+        boutonPause = findViewById(R.id.boutonPause)
+        boutonPrevious = findViewById(R.id.boutonPrevious)
+        boutonNext = findViewById(R.id.boutonNext)
+
+        title.text = chanson?.title
+        artiste.text = chanson?.artist
+
+
+        // initialiser les écouteurs d'événements
+        val ec = Ecouteur()
+
+        boutonPlay.setOnClickListener(ec)
+        boutonPause.setOnClickListener(ec)
+        boutonPrevious.setOnClickListener(ec)
+        boutonNext.setOnClickListener(ec)
+
+
+//        for(enfant in parent) {
+//
+//            if(enfant is ImageView) {
+//
+//                enfant.setOnClickListener(ec)
+//
+//            }
+//        }
+
+
+
+    }
+
+    inner class Ecouteur : OnClickListener {
+
+        override fun onClick(v: View?) {
+
+            if(v == findViewById(R.id.boutonPlay)) {
+                player?.play()
+
+                Toast.makeText(this@PlayerActivity, "Play!", LENGTH_LONG).show()
+            }
+
+            else if(v == findViewById(R.id.boutonPause)) {
+                player?.pause()
+
+                Toast.makeText(this@PlayerActivity, "Pause!", LENGTH_LONG).show()
+            }
+
+            else if(v == findViewById(R.id.boutonNext)) {
+
+                if(player!!.hasNextMediaItem()) {
+
+                    player!!.seekToNextMediaItem()
+
+                }
+
+                Toast.makeText(this@PlayerActivity, "Next!", LENGTH_LONG).show()
+
+            }
+
+            else if(v == (findViewById(R.id.boutonPrevious))) {
+
+                if(player!!.hasPreviousMediaItem()) {
+
+                    player!!.seekToPreviousMediaItem()
+
+                }
+
+                Toast.makeText(this@PlayerActivity, "Previous!", LENGTH_LONG).show()
+            }
+        }
 
     }
 
     override fun onStart() {
         super.onStart()
-
-        playerview.player = player
 
         val mediaItem = MediaItem.fromUri(url!!)
         player?.setMediaItem(mediaItem)
@@ -49,6 +144,52 @@ class PlayerActivity : AppCompatActivity() {
         player?.play()
 
     }
+
+    fun setChanson(url : String) {
+
+        val mediaItem = MediaItem.fromUri(url)
+        player?.setMediaItem(mediaItem)
+        player?.prepare()
+        player?.play()
+
+        title.text = chanson!!.title
+        artiste.text = chanson!!.artist
+
+    }
+
+//    fun verif_size() : Int {
+//
+//        return Modele.playlist.listeMusique.size
+//
+//    }
+//
+//    fun verif_next(id : String) {
+//
+//        var size = verif_size()
+//
+//        var next_id = id.toInt() + 1
+//
+//        if(next_id < size) {
+//
+//            setChanson(Modele.playlist.listeMusique.get(next_id).source)
+//
+//        }
+//
+//    }
+//
+//    fun verif_previous(id: String) {
+//
+//        var size = verif_size()
+//
+//        var previous_id = id.toInt() - 1
+//
+//        if(previous_id < size || previous_id >= 0) {
+//
+//            setChanson(Modele.playlist.listeMusique.get(previous_id).source)
+//
+//        }
+//
+//    }
 
     override fun onStop() {
         super.onStop()

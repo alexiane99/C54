@@ -35,7 +35,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         this.enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(
-            findViewById<View>(R.id.main)
+            findViewById<View>(R.id.liste)
         ) { v: View, insets: WindowInsetsCompat ->
             val systemBars =
                 insets.getInsets(WindowInsetsCompat.Type.systemBars())
