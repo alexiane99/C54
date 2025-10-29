@@ -84,6 +84,7 @@ class PlayerActivity : AppCompatActivity() {
         boutonNext.setOnClickListener(ec)
 
         sl = SeekListener()
+        seekBar.setOnSeekBarChangeListener(sl)
 
 
 //        for(enfant in parent) {
@@ -101,9 +102,7 @@ class PlayerActivity : AppCompatActivity() {
 
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
 
-            val update = updateSecondes!!.get_counter()
-
-            seekBar!!.progress = update
+            seekBar!!.progress = progress
         }
 
         override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -160,11 +159,23 @@ class PlayerActivity : AppCompatActivity() {
 
     inner class MyTimer(millisUntilFinished: Long, interval:Long) : CountDownTimer(millisUntilFinished, interval) {
 
-        var counter : Int? = null
+//        var counter : Int = 0
 
         override fun onTick(millisUntilFinished: Long) {
 
-            counter = counter!!.plus(1)
+            val currentPos = player!!.currentPosition
+            val duration = player!!.duration
+
+            if (duration > 0) { // si on est avant la fin de la chanson
+
+                seekBar.max = (duration / 1000).toInt()
+                seekBar.progress = (currentPos / 1000).toInt()
+
+            }
+
+           // counter = counter!!.plus(1)
+
+            //sl!!.onProgressChanged(seekBar, counter, true)
 
             val nf : NumberFormat
             nf = DecimalFormat("00")
@@ -172,18 +183,47 @@ class PlayerActivity : AppCompatActivity() {
             val sec = (millisUntilFinished / 1000) % 60
             end.text = nf.format(min) + ":" + nf.format(sec)
 
-            seekBar.setOnSeekBarChangeListener(sl)
+            end.text = currentPos.toString()
         }
 
-        fun get_counter() : Int {
 
-            return counter!!
-        }
+//        // Mettre à jour les labels de temps
+//        start.text = formatTime(currentPosition)
+//        end.text = formatTime(duration)
+//    }
+//
+//    override fun onFinish() {
+//        start.text = "00:00"
+//        end.text = "00:00"
+//        seekBar.progress = 0
+//    }
+
+//    // Format mm:ss
+//    private fun formatTime(ms: Long): String {
+//        val totalSeconds = ms / 1000
+//        val minutes = totalSeconds / 60
+//        val seconds = totalSeconds % 60
+//        return String.format("%02d:%02d", minutes, seconds)
+   // }
+//        fun get_counter() : Int {
+//
+//            return counter!!
+//        }
 
         override fun onFinish() {
 
-            end.text = ("00:00")
+            //end.text = ("00:00")
         }
+
+        // Mettre à jour la SeekBar
+//        if (duration > 0) {
+//            seekBar.max = (duration / 1000).toInt()
+//            seekBar.progress = (currentPosition / 1000).toInt()
+//        }
+//
+//        // Mettre à jour les TextViews start / end
+//        start.text = formatTime(currentPosition)
+//        end.text = formatTime(duration)
 
     }
 
