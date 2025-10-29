@@ -10,6 +10,7 @@ import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
@@ -40,6 +41,7 @@ class PlayerActivity : AppCompatActivity() {
     var player : ExoPlayer? = null
     var url : String? = null
     var updateSecondes : MyTimer? = null
+    var sl : SeekListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +83,9 @@ class PlayerActivity : AppCompatActivity() {
         boutonPrevious.setOnClickListener(ec)
         boutonNext.setOnClickListener(ec)
 
+        sl = SeekListener()
+
+
 //        for(enfant in parent) {
 //
 //            if(enfant is ImageView) {
@@ -89,6 +94,25 @@ class PlayerActivity : AppCompatActivity() {
 //
 //            }
 //        }
+
+    }
+
+    inner class SeekListener : OnSeekBarChangeListener {
+
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+            val update = updateSecondes!!.get_counter()
+
+            seekBar!!.progress = update
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            TODO("Not yet implemented")
+        }
 
     }
 
@@ -136,13 +160,24 @@ class PlayerActivity : AppCompatActivity() {
 
     inner class MyTimer(millisUntilFinished: Long, interval:Long) : CountDownTimer(millisUntilFinished, interval) {
 
+        var counter : Int? = null
 
         override fun onTick(millisUntilFinished: Long) {
 
-            val f = DecimalFormat("00")
+            counter = counter!!.plus(1)
+
+            val nf : NumberFormat
+            nf = DecimalFormat("00")
             val min = (millisUntilFinished / 60000) % 60
             val sec = (millisUntilFinished / 1000) % 60
-            end.text = f.format(min) + ":" + f.format(sec)
+            end.text = nf.format(min) + ":" + nf.format(sec)
+
+            seekBar.setOnSeekBarChangeListener(sl)
+        }
+
+        fun get_counter() : Int {
+
+            return counter!!
         }
 
         override fun onFinish() {
