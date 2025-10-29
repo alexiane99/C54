@@ -1,23 +1,27 @@
 package com.example.tp1
 
+import android.icu.text.DecimalFormat
+import android.icu.text.MessageFormat.format
+import android.icu.text.NumberFormat
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.iterator
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
-import com.example.tp1.databinding.PlayerActivityBinding
+import androidx.media3.ui.TimeBar
 
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var binding: PlayerActivityBinding
+    //private lateinit var binding: PlayerActivityBinding
 
     lateinit var playerview : PlayerView
     lateinit var parent: LinearLayout
@@ -27,11 +31,15 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var boutonPause : ImageView
     lateinit var boutonPrevious : ImageView
     lateinit var boutonNext : ImageView
+    lateinit var start: TextView
+    lateinit var end : TextView
+    lateinit var seekBar: SeekBar
 
     var chanson : Chanson? = null
     var liste : ListeMusique = Modele.playlist
     var player : ExoPlayer? = null
     var url : String? = null
+    var updateSecondes : MyTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +65,9 @@ class PlayerActivity : AppCompatActivity() {
         boutonPause = findViewById(R.id.boutonPause)
         boutonPrevious = findViewById(R.id.boutonPrevious)
         boutonNext = findViewById(R.id.boutonNext)
+        start = findViewById(R.id.start)
+        end = findViewById(R.id.end)
+        seekBar = findViewById(R.id.seekBar)
 
         title.text = chanson?.title
         artiste.text = chanson?.artist
@@ -69,7 +80,6 @@ class PlayerActivity : AppCompatActivity() {
         boutonPause.setOnClickListener(ec)
         boutonPrevious.setOnClickListener(ec)
         boutonNext.setOnClickListener(ec)
-
 
 //        for(enfant in parent) {
 //
@@ -124,6 +134,24 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
+    inner class MyTimer(millisUntilFinished: Long, interval:Long) : CountDownTimer(millisUntilFinished, interval) {
+
+
+        override fun onTick(millisUntilFinished: Long) {
+
+            val f = DecimalFormat("00")
+            val min = (millisUntilFinished / 60000) % 60
+            val sec = (millisUntilFinished / 1000) % 60
+            end.text = f.format(min) + ":" + f.format(sec)
+        }
+
+        override fun onFinish() {
+
+            end.text = ("00:00")
+        }
+
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -134,7 +162,14 @@ class PlayerActivity : AppCompatActivity() {
         player?.prepare()
         player?.play()
 
+        updateSecondes = MyTimer(chanson!!.duration.toLong(), 1000)
+        updateSecondes!!.start()
+        //seekBar.progress = updateSecondes
+
+        // max length duration / 1000
+
         init_playlist()
+
 
     }
 
@@ -146,18 +181,6 @@ class PlayerActivity : AppCompatActivity() {
 
             player?.addMediaItem(mediaItem)
         }
-
-    }
-
-    fun setChanson(url : String) {
-
-        val mediaItem = MediaItem.fromUri(url)
-        player?.setMediaItem(mediaItem)
-        player?.prepare()
-        player?.play()
-
-        title.text = chanson!!.title
-        artiste.text = chanson!!.artist
 
     }
     override fun onStop() {

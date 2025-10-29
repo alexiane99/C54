@@ -134,10 +134,4 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
     }
 
-    open class CountDownTimer() {
-
-       // var updateSecondes = MonTimer(nombre de ms avant la fin du timer, invervalle entre chaque tic)
-
-    }
-
 }
