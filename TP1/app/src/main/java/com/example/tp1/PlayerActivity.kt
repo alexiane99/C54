@@ -29,8 +29,7 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var boutonNext : ImageView
 
     var chanson : Chanson? = null
-    var playlist = Modele.playlist.listeMusique
-
+    var liste : ListeMusique = Modele.playlist
     var player : ExoPlayer? = null
     var url : String? = null
 
@@ -46,17 +45,9 @@ class PlayerActivity : AppCompatActivity() {
 
         playerview = findViewById(R.id.player_view)
 
-        player = ExoPlayer.Builder(this@PlayerActivity).build()
-
-        playerview.player = player
-
-//        val playlist = Modele.playlist.listeMusique.map { chanson ->
-//            MediaItem.fromUri(chanson.source)
-//        }
-//        player.setMediaItems(playlist)
-
         playerview.setUseController(false); // on annule l'utilisation des boutons
 
+        player = ExoPlayer.Builder(this@PlayerActivity).build()
 
         parent = findViewById(R.id.chanson)
         title = findViewById(R.id.texteTitre)
@@ -88,8 +79,6 @@ class PlayerActivity : AppCompatActivity() {
 //
 //            }
 //        }
-
-
 
     }
 
@@ -138,10 +127,25 @@ class PlayerActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        playerview.player = player
+
         val mediaItem = MediaItem.fromUri(url!!)
         player?.setMediaItem(mediaItem)
         player?.prepare()
         player?.play()
+
+        init_playlist()
+
+    }
+
+    fun init_playlist() {
+
+        for(i in 0 ..liste.listeMusique.size - 1) {
+
+            val mediaItem = MediaItem.fromUri(liste.listeMusique.get(i).source)
+
+            player?.addMediaItem(mediaItem)
+        }
 
     }
 
@@ -156,41 +160,6 @@ class PlayerActivity : AppCompatActivity() {
         artiste.text = chanson!!.artist
 
     }
-
-//    fun verif_size() : Int {
-//
-//        return Modele.playlist.listeMusique.size
-//
-//    }
-//
-//    fun verif_next(id : String) {
-//
-//        var size = verif_size()
-//
-//        var next_id = id.toInt() + 1
-//
-//        if(next_id < size) {
-//
-//            setChanson(Modele.playlist.listeMusique.get(next_id).source)
-//
-//        }
-//
-//    }
-//
-//    fun verif_previous(id: String) {
-//
-//        var size = verif_size()
-//
-//        var previous_id = id.toInt() - 1
-//
-//        if(previous_id < size || previous_id >= 0) {
-//
-//            setChanson(Modele.playlist.listeMusique.get(previous_id).source)
-//
-//        }
-//
-//    }
-
     override fun onStop() {
         super.onStop()
         player?.release()

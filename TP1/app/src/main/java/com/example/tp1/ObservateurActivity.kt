@@ -74,6 +74,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         val listeTemp = ArrayList<HashMap<String, Any>>()
 
         val listeChansons = Modele.playlist.listeMusique
+
         for(i in 0 ..listeChansons.size - 1) {
 
             // java style
