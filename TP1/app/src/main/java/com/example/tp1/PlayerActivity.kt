@@ -38,6 +38,8 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var start: TextView
     lateinit var end : TextView
     lateinit var seekBar: SeekBar
+    lateinit var boutonForward : ImageView
+    lateinit var boutonBack : ImageView
 
     var chanson : Chanson? = null
     var liste : ListeMusique = Modele.playlist
@@ -70,6 +72,8 @@ class PlayerActivity : AppCompatActivity() {
         boutonPause = findViewById(R.id.boutonPause)
         boutonPrevious = findViewById(R.id.boutonPrevious)
         boutonNext = findViewById(R.id.boutonNext)
+        boutonForward = findViewById(R.id.boutonForward)
+        boutonBack = findViewById(R.id.boutonBackward)
         start = findViewById(R.id.start)
         end = findViewById(R.id.end)
         seekBar = findViewById(R.id.seekBar)
@@ -85,6 +89,8 @@ class PlayerActivity : AppCompatActivity() {
         boutonPause.setOnClickListener(ec)
         boutonPrevious.setOnClickListener(ec)
         boutonNext.setOnClickListener(ec)
+        boutonForward.setOnClickListener(ec)
+        boutonBack.setOnClickListener(ec)
 
         sl = SeekListener()
         seekBar.setOnSeekBarChangeListener(sl)
@@ -125,19 +131,19 @@ class PlayerActivity : AppCompatActivity() {
             println(player?.duration)
             println(player?.currentPosition)
 
-            if(v == findViewById(R.id.boutonPlay)) {
+            if(v == boutonPlay) {
                 player?.play()
 
                 Toast.makeText(this@PlayerActivity, "Play!", LENGTH_LONG).show()
             }
 
-            else if(v == findViewById(R.id.boutonPause)) {
+            else if(v == boutonPause) {
                 player?.pause()
 
                 Toast.makeText(this@PlayerActivity, "Pause!", LENGTH_LONG).show()
             }
 
-            else if(v == findViewById(R.id.boutonNext)) {
+            else if(v == boutonNext) {
 
                 if(player!!.hasNextMediaItem()) {
 
@@ -149,7 +155,7 @@ class PlayerActivity : AppCompatActivity() {
 
             }
 
-            else if(v == (findViewById(R.id.boutonPrevious))) {
+            else if(v == boutonPrevious) {
 
                 if(player!!.hasPreviousMediaItem()) {
 
@@ -158,6 +164,17 @@ class PlayerActivity : AppCompatActivity() {
                 }
 
                 Toast.makeText(this@PlayerActivity, "Previous!", LENGTH_LONG).show()
+            }
+
+            else if(v == boutonBack) {
+
+                // modifier currentPos
+
+            }
+            else if(v == boutonForward) {
+
+                // modifier currentPos
+
             }
         }
 
@@ -247,7 +264,6 @@ class PlayerActivity : AppCompatActivity() {
         player?.setMediaItem(mediaItem)
         player?.prepare()
         player?.play()
-
 
         player?.addListener(
             object : Listener {
