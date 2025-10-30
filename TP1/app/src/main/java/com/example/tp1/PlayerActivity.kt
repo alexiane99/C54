@@ -17,6 +17,8 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.Player.Listener
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.media3.ui.TimeBar
@@ -87,7 +89,6 @@ class PlayerActivity : AppCompatActivity() {
         sl = SeekListener()
         seekBar.setOnSeekBarChangeListener(sl)
 
-
 //        for(enfant in parent) {
 //
 //            if(enfant is ImageView) {
@@ -97,9 +98,8 @@ class PlayerActivity : AppCompatActivity() {
 //            }
 //        }
 
-        start.text = "1:00"
-        end.text = "3:00"
     }
+
 
     inner class SeekListener : OnSeekBarChangeListener {
 
@@ -109,11 +109,11 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            TODO("Not yet implemented")
+
         }
 
         override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            TODO("Not yet implemented")
+
         }
 
     }
@@ -165,67 +165,66 @@ class PlayerActivity : AppCompatActivity() {
 
     inner class MyTimer(millisUntilFinished: Long, interval:Long) : CountDownTimer(millisUntilFinished, interval) {
 
-//        var counter : Int = 0
+        var onPause = false
 
         @SuppressLint("SetTextI18n")
         override fun onTick(millisUntilFinished: Long) {
 
-            val currentPos = player!!.currentPosition
-            val duration = player!!.duration
+            if(!onPause) {
 
-            println(currentPos)
-            println(duration)
+                var currentPos = player!!.currentPosition
+                var duration = player!!.duration
 
-            if (duration > 0) { // si on est avant la fin de la chanson
+                println(currentPos)
+                println(duration)
 
-                seekBar.max = millisToSec(duration)
-                seekBar.progress = millisToSec(currentPos)
+                if (duration > 0 && currentPos >= 0) { // si on est avant la fin de la chanson
 
+                    seekBar.max = millisToSec(duration)
+                    seekBar.progress = millisToSec(currentPos)
+
+                    var temps_restant = duration - currentPos
+
+                    end.text = format_timer(temps_restant)
+                    start.text = format_timer(currentPos)
+
+                }
             }
-
-           // counter = counter!!.plus(1)
-
-            //sl!!.onProgressChanged(seekBar, counter, true)
-
-            val nf : NumberFormat
-            nf = DecimalFormat("00")
-//            val min = (millisUntilFinished / 60000) % 60
-//            val sec = (millisUntilFinished / 1000) % 60
-//            end.text = ("${nf.format(min)} : ${nf.format(sec)}")
-
-//            end.text = currentPos.toString()
-
-            val remaining = duration - currentPos
-            val min = (remaining / 60000) % 60
-            val sec = (remaining / 1000) % 60
-            end.text = "${nf.format(min)} : ${nf.format(sec)}"
         }
+        fun setPause() {
+            onPause = true
+        }
+        fun setPlay() {
+
+            onPause = false
+        }
+
+        // Convertir les millisecondes en secondes
         fun millisToSec(milisec : Long) : Int {
 
             return (milisec/1000).toInt()
 
+        }
+        // convertir le temps en format String
+        fun format_timer(temps : Long) : String {
 
+            val nf : NumberFormat
+            nf = DecimalFormat("00")
+
+            val min = (temps / 60000) % 60
+            val sec = (temps / 1000) % 60
+
+            return "${nf.format(min)}:${nf.format((sec))}"
         }
 
-        fun updateCoutdown(milisec: Long) : String {
-
-            return millisToSec(milisec).toString()
-
-        }
-
-
-//        // Mettre à jour les labels de temps
-//        start.text = formatTime(currentPosition)
-//        end.text = formatTime(duration)
-//    }
-
-//    // Format mm:ss
+//    Format mm:ss
 //    private fun formatTime(ms: Long): String {
 //        val totalSeconds = ms / 1000
 //        val minutes = totalSeconds / 60
 //        val seconds = totalSeconds % 60
 //        return String.format("%02d:%02d", minutes, seconds)
-   // }
+//        }
+
 //        fun get_counter() : Int {
 //
 //            return counter!!
@@ -237,18 +236,7 @@ class PlayerActivity : AppCompatActivity() {
             seekBar.progress = 0
         }
 
-        // Mettre à jour la SeekBar
-//        if (duration > 0) {
-//            seekBar.max = (duration / 1000).toInt()
-//            seekBar.progress = (currentPosition / 1000).toInt()
-//        }
-//
-//        // Mettre à jour les TextViews start / end
-//        start.text = formatTime(currentPosition)
-//        end.text = formatTime(duration)
-
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -261,15 +249,41 @@ class PlayerActivity : AppCompatActivity() {
         player?.play()
 
 
-        updateSecondes = MyTimer(chanson!!.duration.toLong(), 1000)
-        updateSecondes!!.start()
+        player?.addListener(
+            object : Listener {
+
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    super.onPlaybackStateChanged(playbackState)
+                    if(playbackState == Player.STATE_READY) {
+
+                        if (updateSecondes == null) {
+                            updateSecondes = MyTimer(Long.MAX_VALUE, 1000)
+                            updateSecondes!!.start()
+                        }
+                    }
+                    if (playbackState == Player.STATE_ENDED) {
+
+                        updateSecondes!!.onFinish()
+                    }
+                }
+
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    super.onIsPlayingChanged(isPlaying)
+                    if(isPlaying) {
+
+                        updateSecondes?.setPlay()
+                    }
+                    else {
+                        updateSecondes?.setPause()
+                    }
+                }
+            }
+        )
 
         //seekBar.progress = updateSecondes
-
         // max length duration / 1000
 
         init_playlist()
-
 
     }
 
@@ -285,11 +299,9 @@ class PlayerActivity : AppCompatActivity() {
     }
     override fun onStop() {
         super.onStop()
+
         player?.release()
     }
-
-
-
 
 }
 
