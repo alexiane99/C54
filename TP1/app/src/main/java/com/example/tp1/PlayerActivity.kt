@@ -1,5 +1,6 @@
 package com.example.tp1
 
+import android.annotation.SuppressLint
 import android.icu.text.DecimalFormat
 import android.icu.text.MessageFormat.format
 import android.icu.text.NumberFormat
@@ -96,6 +97,8 @@ class PlayerActivity : AppCompatActivity() {
 //            }
 //        }
 
+        start.text = "1:00"
+        end.text = "3:00"
     }
 
     inner class SeekListener : OnSeekBarChangeListener {
@@ -118,6 +121,9 @@ class PlayerActivity : AppCompatActivity() {
     inner class Ecouteur : OnClickListener {
 
         override fun onClick(v: View?) {
+
+            println(player?.duration)
+            println(player?.currentPosition)
 
             if(v == findViewById(R.id.boutonPlay)) {
                 player?.play()
@@ -161,15 +167,19 @@ class PlayerActivity : AppCompatActivity() {
 
 //        var counter : Int = 0
 
+        @SuppressLint("SetTextI18n")
         override fun onTick(millisUntilFinished: Long) {
 
             val currentPos = player!!.currentPosition
             val duration = player!!.duration
 
+            println(currentPos)
+            println(duration)
+
             if (duration > 0) { // si on est avant la fin de la chanson
 
-                seekBar.max = (duration / 1000).toInt()
-                seekBar.progress = (currentPos / 1000).toInt()
+                seekBar.max = millisToSec(duration)
+                seekBar.progress = millisToSec(currentPos)
 
             }
 
@@ -179,23 +189,34 @@ class PlayerActivity : AppCompatActivity() {
 
             val nf : NumberFormat
             nf = DecimalFormat("00")
-            val min = (millisUntilFinished / 60000) % 60
-            val sec = (millisUntilFinished / 1000) % 60
-            end.text = nf.format(min) + ":" + nf.format(sec)
+//            val min = (millisUntilFinished / 60000) % 60
+//            val sec = (millisUntilFinished / 1000) % 60
+//            end.text = ("${nf.format(min)} : ${nf.format(sec)}")
 
-            end.text = currentPos.toString()
+//            end.text = currentPos.toString()
+
+            val remaining = duration - currentPos
+            val min = (remaining / 60000) % 60
+            val sec = (remaining / 1000) % 60
+            end.text = "${nf.format(min)} : ${nf.format(sec)}"
+        }
+        fun millisToSec(milisec : Long) : Int {
+
+            return (milisec/1000).toInt()
+
+
+        }
+
+        fun updateCoutdown(milisec: Long) : String {
+
+            return millisToSec(milisec).toString()
+
         }
 
 
 //        // Mettre à jour les labels de temps
 //        start.text = formatTime(currentPosition)
 //        end.text = formatTime(duration)
-//    }
-//
-//    override fun onFinish() {
-//        start.text = "00:00"
-//        end.text = "00:00"
-//        seekBar.progress = 0
 //    }
 
 //    // Format mm:ss
@@ -212,7 +233,8 @@ class PlayerActivity : AppCompatActivity() {
 
         override fun onFinish() {
 
-            //end.text = ("00:00")
+            end.text = "00:00"
+            seekBar.progress = 0
         }
 
         // Mettre à jour la SeekBar
@@ -227,6 +249,7 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
+
     override fun onStart() {
         super.onStart()
 
@@ -237,8 +260,10 @@ class PlayerActivity : AppCompatActivity() {
         player?.prepare()
         player?.play()
 
+
         updateSecondes = MyTimer(chanson!!.duration.toLong(), 1000)
         updateSecondes!!.start()
+
         //seekBar.progress = updateSecondes
 
         // max length duration / 1000
