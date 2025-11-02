@@ -168,12 +168,27 @@ class PlayerActivity : AppCompatActivity() {
 
             else if(v == boutonBack) {
 
-                // modifier currentPos
+                var updatePos = player!!.currentPosition - 10000
+
+                if(updatePos < 0) {
+                    updatePos = 0 // si on recule trop, on met la position au début
+                }
+                player!!.seekTo(updatePos)
+
+                Toast.makeText(this@PlayerActivity, "Back 10 sec", LENGTH_LONG).show()
 
             }
             else if(v == boutonForward) {
 
-                // modifier currentPos
+                var updatePos = player!!.currentPosition + 10000
+
+                if(updatePos > player!!.duration) {
+
+                    updatePos = player!!.duration // si le temps dépasse la chanson, on met à la fin de la chanson
+                }
+                player!!.seekTo(updatePos)
+
+                Toast.makeText(this@PlayerActivity, "Plus 10 sec", LENGTH_LONG).show()
 
             }
         }
