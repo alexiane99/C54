@@ -1,6 +1,7 @@
 package com.example.tp1
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.icu.text.DecimalFormat
 import android.icu.text.NumberFormat
@@ -25,6 +26,10 @@ import androidx.media3.common.Player
 import androidx.media3.common.Player.Listener
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -48,9 +53,9 @@ class PlayerActivity : AppCompatActivity() {
     var indexChanson : Int = 0
     var liste : ListeMusique = Modele.playlist
     var player : ExoPlayer? = null
-    var url : String? = null
     var updateSecondes : MyTimer? = null
     var sl : SeekListener? = null
+    var progression : Int? = null
 
     val lanceur: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(), CallBackInfosChanson())
@@ -127,10 +132,56 @@ class PlayerActivity : AppCompatActivity() {
 
         override fun onStartTrackingTouch(seekBar: SeekBar?) {
 
+            player?.pause()
+
         }
 
         override fun onStopTrackingTouch(seekBar: SeekBar?) {
 
+            var newPos = seekBar!!.progress
+            player!!.seekTo((newPos * 1000).toLong())
+            player?.play()
+
+        }
+
+    }
+
+    fun serializerProgression(context: Context) : Progression  {
+
+        val fos = context.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
+        val oos = ObjectOutputStream(fos)
+
+        var p = Progression(player!!.currentPosition, seekBar.progress)
+
+        oos.use{
+
+            // on met volume directement
+            oos.writeObject(Progression(player!!.currentPosition, seekBar.progress))
+        }
+
+        return p;
+
+    }
+
+    fun deserializerProgression(context: Context) {
+
+        try {
+            val fis = context.openFileInput("serialisation.ser")
+            val ois = ObjectInputStream(fis)
+
+            ois.use {
+                val p = ois.readObject() as Progression
+
+                player!!.seekTo(p.progress)
+                seekBar.progress = p.seekBarProgress
+                player!!.play()
+
+            }
+        }
+        catch (fnfe: FileNotFoundException) {
+
+            Toast.makeText(this@PlayerActivity, "Il n'y a pas de fichier de sérialisation", Toast.LENGTH_LONG).show()
+            // peut init à 50 par défaut
         }
 
     }
@@ -309,6 +360,9 @@ class PlayerActivity : AppCompatActivity() {
 
         player?.seekToDefaultPosition(indexChanson)
         player?.prepare()
+
+        deserializerProgression(this@PlayerActivity)
+
         player?.play()
 
         updateInfosChanson()
@@ -367,6 +421,14 @@ class PlayerActivity : AppCompatActivity() {
     }
     override fun onStop() {
         super.onStop()
+
+        try {
+            serializerProgression(this@PlayerActivity) // écrire ici la méthode dans le try catch
+        }
+        catch (io:IOException) {
+
+            io.printStackTrace()
+        }
 
         player?.release()
     }
