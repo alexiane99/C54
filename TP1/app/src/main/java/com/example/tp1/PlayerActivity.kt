@@ -34,7 +34,6 @@ import java.io.ObjectOutputStream
 class PlayerActivity : AppCompatActivity() {
 
     //private lateinit var binding: PlayerActivityBinding
-
     lateinit var playerview : PlayerView
     lateinit var parent: LinearLayout
     lateinit var title : TextView
@@ -66,8 +65,10 @@ class PlayerActivity : AppCompatActivity() {
         indexChanson = intent.getIntExtra("indexChanson", 0)
 
         // Initialiser le player
-        player = ExoPlayer.Builder(this@PlayerActivity).build()
+        if(player == null) {
 
+            player = ExoPlayer.Builder(this@PlayerActivity).build()
+        }
 
         // Initialiser la vue
 
@@ -95,7 +96,6 @@ class PlayerActivity : AppCompatActivity() {
         // Initialiser la première chanson à l'écoute
         chanson = liste.listeMusique[indexChanson]
 
-
         // initialiser les écouteurs d'événements
         val ec = Ecouteur()
 
@@ -116,37 +116,9 @@ class PlayerActivity : AppCompatActivity() {
 //
 //                enfant.setOnClickListener(ec)
 //
-//            }
-//        }
-
-    }
-
-
-    inner class SeekListener : OnSeekBarChangeListener {
-
-        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-
-            seekBar!!.progress = progress
-        }
-
-        override fun onStartTrackingTouch(seekBar: SeekBar?) {
-
-            player?.pause()
-
-        }
-
-        override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-            var newPos = seekBar!!.progress
-            player!!.seekTo((newPos * 1000).toLong())
-            player?.play()
-
-        }
-
     }
 
     fun serializerProgression(context: Context)   {
-
         try {
             val fos = context.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
             val oos = ObjectOutputStream(fos)
@@ -159,13 +131,10 @@ class PlayerActivity : AppCompatActivity() {
         catch(io:IOException) {
 
             io.printStackTrace()
-
         }
-
     }
 
     fun deserializerProgression(context: Context) {
-
         try {
             val fis = context.openFileInput("serialisation.ser")
             val ois = ObjectInputStream(fis)
@@ -176,15 +145,34 @@ class PlayerActivity : AppCompatActivity() {
                 player!!.seekTo(p.progress)
                 seekBar.progress = p.seekBarProgress
                 player!!.play()
-
             }
         }
         catch (fnfe: FileNotFoundException) {
-
             Toast.makeText(this@PlayerActivity, "Il n'y a pas de fichier de sérialisation", Toast.LENGTH_LONG).show()
-            // peut init à 50 par défaut
         }
+        catch(e: Exception) {
+            e.printStackTrace()
+            context.deleteFile("serialisation.ser")
+        }
+    }
 
+    inner class SeekListener : OnSeekBarChangeListener {
+
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+            seekBar!!.progress = progress
+        }
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            player?.pause()
+
+        }
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            var newPos = seekBar!!.progress
+            player!!.seekTo((newPos * 1000).toLong())
+            player?.play()
+
+        }
     }
 
     inner class Ecouteur : OnClickListener {
@@ -199,39 +187,33 @@ class PlayerActivity : AppCompatActivity() {
 
                 Toast.makeText(this@PlayerActivity, "Play!", LENGTH_LONG).show()
             }
-
             else if(v == boutonPause) {
                 player?.pause()
 
                 Toast.makeText(this@PlayerActivity, "Pause!", LENGTH_LONG).show()
             }
-
             else if(v == boutonNext) {
 
                 if(player!!.hasNextMediaItem()) {
 
                     player!!.seekToNextMediaItem()
                     updateInfosChanson()
-
                 }
 
                 Toast.makeText(this@PlayerActivity, "Next!", LENGTH_LONG).show()
-
             }
-
             else if(v == boutonPrevious) {
 
                 if(player!!.hasPreviousMediaItem()) {
 
                     player!!.seekToPreviousMediaItem()
                     updateInfosChanson()
-
                 }
 
                 Toast.makeText(this@PlayerActivity, "Previous!", LENGTH_LONG).show()
             }
-
             else if(v == boutonBack) {
+                updateSecondes!!.setPause()
 
                 var updatePos = player!!.currentPosition - 10000
 
@@ -240,10 +222,12 @@ class PlayerActivity : AppCompatActivity() {
                 }
                 player!!.seekTo(updatePos)
 
-                Toast.makeText(this@PlayerActivity, "Back 10 sec", LENGTH_LONG).show()
+                playerview.postDelayed({updateSecondes!!.setPlay()}, 500) // ajout pcq lag avec les appels de SeekTo
 
+                Toast.makeText(this@PlayerActivity, "Back 10 sec", LENGTH_LONG).show()
             }
             else if(v == boutonForward) {
+                updateSecondes?.setPause()
 
                 var updatePos = player!!.currentPosition + 10000
 
@@ -253,8 +237,10 @@ class PlayerActivity : AppCompatActivity() {
                 }
                 player!!.seekTo(updatePos)
 
-                Toast.makeText(this@PlayerActivity, "Plus 10 sec", LENGTH_LONG).show()
+                playerview.postDelayed({ updateSecondes!!.setPlay() }, 500) // ici aussi
 
+
+                Toast.makeText(this@PlayerActivity, "Plus 10 sec", LENGTH_LONG).show()
             }
             else if(v == playerview) {
                 val i : Intent = Intent(this@PlayerActivity, InfosActivity::class.java)
@@ -274,7 +260,6 @@ class PlayerActivity : AppCompatActivity() {
                 val intentRetour = result.data
             }
         }
-
     }
 
     inner class MyTimer(millisUntilFinished: Long, interval:Long) : CountDownTimer(millisUntilFinished, interval) {
@@ -312,15 +297,11 @@ class PlayerActivity : AppCompatActivity() {
 
             onPause = false
         }
-
-        // Convertir les millisecondes en secondes
-        fun millisToSec(milisec : Long) : Int {
+        fun millisToSec(milisec : Long) : Int {  // Convertir les millisecondes en secondes
 
             return (milisec/1000).toInt()
-
         }
-        // convertir le temps en format String
-        fun format_timer(temps : Long) : String {
+        fun format_timer(temps : Long) : String {  // convertir le temps en format String
 
             val nf : NumberFormat
             nf = DecimalFormat("00")
@@ -330,33 +311,17 @@ class PlayerActivity : AppCompatActivity() {
 
             return "${nf.format(min)}:${nf.format((sec))}"
         }
-
-//    Format mm:ss
-//    private fun formatTime(ms: Long): String {
-//        val totalSeconds = ms / 1000
-//        val minutes = totalSeconds / 60
-//        val seconds = totalSeconds % 60
-//        return String.format("%02d:%02d", minutes, seconds)
-//        }
-
-//        fun get_counter() : Int {
-//
-//            return counter!!
-//        }
-
         override fun onFinish() {
 
             end.text = "00:00"
             seekBar.progress = 0
         }
-
     }
 
     override fun onStart() {
         super.onStart()
 
         playerview.player = player
-
         init_playlist()
 
         player?.seekToDefaultPosition(indexChanson)
@@ -376,7 +341,7 @@ class PlayerActivity : AppCompatActivity() {
                     if(playbackState == Player.STATE_READY) {
 
                         if (updateSecondes == null) {
-                            updateSecondes = MyTimer(Long.MAX_VALUE, 1000)
+                            updateSecondes = MyTimer(Long.MAX_VALUE, 1500)
                             updateSecondes!!.start()
                         }
                     }
@@ -385,7 +350,6 @@ class PlayerActivity : AppCompatActivity() {
                         updateSecondes!!.onFinish()
                     }
                 }
-
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
                     super.onIsPlayingChanged(isPlaying)
                     if(isPlaying) {
@@ -398,16 +362,17 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         )
-
     }
 
     private fun init_playlist() {
 
-        for(i in 0 ..liste.listeMusique.size - 1) {
+        if(player?.mediaItemCount == 0) { // si la playlist est vide
 
-            val mediaItem = MediaItem.fromUri(liste.listeMusique.get(i).source)
+            for (i in 0..liste.listeMusique.size - 1) {
 
-            player?.addMediaItem(mediaItem)
+                val mediaItem = MediaItem.fromUri(liste.listeMusique.get(i).source)
+                player?.addMediaItem(mediaItem)
+            }
         }
 
     }
@@ -431,7 +396,15 @@ class PlayerActivity : AppCompatActivity() {
             io.printStackTrace()
         }
 
+    }
+    override fun onResume() {
+        super.onResume()
+        playerview.player = player
+    }
+    override fun onDestroy() {
+        super.onDestroy()
         player?.release()
+        player = null
     }
 
 }
