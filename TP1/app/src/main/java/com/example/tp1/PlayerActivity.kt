@@ -1,8 +1,8 @@
 package com.example.tp1
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.icu.text.DecimalFormat
-import android.icu.text.MessageFormat.format
 import android.icu.text.NumberFormat
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -15,13 +15,16 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.Listener
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
-import androidx.media3.ui.TimeBar
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -42,27 +45,34 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var boutonBack : ImageView
 
     var chanson : Chanson? = null
+    var indexChanson : Int = 0
     var liste : ListeMusique = Modele.playlist
     var player : ExoPlayer? = null
     var url : String? = null
     var updateSecondes : MyTimer? = null
     var sl : SeekListener? = null
 
+    val lanceur: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(), CallBackInfosChanson())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        chanson = intent.getParcelableExtra<Chanson>("chanson")
+        // Récupérer le intent de la playlist
+        indexChanson = intent.getIntExtra("indexChanson", 0)
 
-        url = chanson!!.source
+        // Initialiser le player
+        player = ExoPlayer.Builder(this@PlayerActivity).build()
+
+
+        // Initialiser la vue
 
         //binding = PlayerActivityBinding.inflate(layoutInflater)
         setContentView(R.layout.chanson) //(binding.root) #pour afficher la page
 
         playerview = findViewById(R.id.player_view)
-
         playerview.setUseController(false); // on annule l'utilisation des boutons
-
-        player = ExoPlayer.Builder(this@PlayerActivity).build()
+        playerview.isClickable = true
 
         parent = findViewById(R.id.chanson)
         title = findViewById(R.id.texteTitre)
@@ -78,8 +88,8 @@ class PlayerActivity : AppCompatActivity() {
         end = findViewById(R.id.end)
         seekBar = findViewById(R.id.seekBar)
 
-        title.text = chanson?.title
-        artiste.text = chanson?.artist
+        // Initialiser la première chanson à l'écoute
+        chanson = liste.listeMusique[indexChanson]
 
 
         // initialiser les écouteurs d'événements
@@ -91,6 +101,7 @@ class PlayerActivity : AppCompatActivity() {
         boutonNext.setOnClickListener(ec)
         boutonForward.setOnClickListener(ec)
         boutonBack.setOnClickListener(ec)
+        playerview.setOnClickListener(ec)
 
         sl = SeekListener()
         seekBar.setOnSeekBarChangeListener(sl)
@@ -148,6 +159,7 @@ class PlayerActivity : AppCompatActivity() {
                 if(player!!.hasNextMediaItem()) {
 
                     player!!.seekToNextMediaItem()
+                    updateInfosChanson()
 
                 }
 
@@ -160,6 +172,7 @@ class PlayerActivity : AppCompatActivity() {
                 if(player!!.hasPreviousMediaItem()) {
 
                     player!!.seekToPreviousMediaItem()
+                    updateInfosChanson()
 
                 }
 
@@ -190,6 +203,23 @@ class PlayerActivity : AppCompatActivity() {
 
                 Toast.makeText(this@PlayerActivity, "Plus 10 sec", LENGTH_LONG).show()
 
+            }
+            else if(v == playerview) {
+                val i : Intent = Intent(this@PlayerActivity, InfosActivity::class.java)
+                val indexCurrent =  player!!.currentMediaItemIndex
+                i.putExtra("indexCurrent", indexCurrent)
+                lanceur.launch(i)
+            }
+        }
+
+    }
+    inner class CallBackInfosChanson() : ActivityResultCallback<ActivityResult> {
+
+        override fun onActivityResult(result: ActivityResult) {
+
+            if(result.resultCode == RESULT_OK) {
+
+                val intentRetour = result.data
             }
         }
 
@@ -275,10 +305,13 @@ class PlayerActivity : AppCompatActivity() {
 
         playerview.player = player
 
-        val mediaItem = MediaItem.fromUri(url!!)
-        player?.setMediaItem(mediaItem)
+        init_playlist()
+
+        player?.seekToDefaultPosition(indexChanson)
         player?.prepare()
         player?.play()
+
+        updateInfosChanson()
 
         player?.addListener(
             object : Listener {
@@ -311,14 +344,9 @@ class PlayerActivity : AppCompatActivity() {
             }
         )
 
-        //seekBar.progress = updateSecondes
-        // max length duration / 1000
-
-        init_playlist()
-
     }
 
-    fun init_playlist() {
+    private fun init_playlist() {
 
         for(i in 0 ..liste.listeMusique.size - 1) {
 
@@ -326,6 +354,15 @@ class PlayerActivity : AppCompatActivity() {
 
             player?.addMediaItem(mediaItem)
         }
+
+    }
+    fun updateInfosChanson() {
+
+        val indexCurrent = player?.currentMediaItemIndex ?: 0
+        chanson = liste.listeMusique[indexCurrent]
+
+        title.text = chanson!!.title
+        artiste.text = chanson!!.artist
 
     }
     override fun onStop() {

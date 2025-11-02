@@ -126,8 +126,8 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
             val i : Intent = Intent(this@ObservateurActivity, PlayerActivity::class.java) // on va ouvrir le player ici
-            val titrechanson = Modele.playlist.listeMusique.get(position)
-            i.putExtra("chanson", titrechanson)
+            val indexChanson = position
+            i.putExtra("indexChanson", indexChanson)
             startActivity(i);
         }
 
