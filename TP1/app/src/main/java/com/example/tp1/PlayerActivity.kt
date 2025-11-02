@@ -55,7 +55,6 @@ class PlayerActivity : AppCompatActivity() {
     var player : ExoPlayer? = null
     var updateSecondes : MyTimer? = null
     var sl : SeekListener? = null
-    var progression : Int? = null
 
     val lanceur: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(), CallBackInfosChanson())
@@ -146,20 +145,22 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
-    fun serializerProgression(context: Context) : Progression  {
+    fun serializerProgression(context: Context)   {
 
-        val fos = context.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
-        val oos = ObjectOutputStream(fos)
+        try {
+            val fos = context.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
+            val oos = ObjectOutputStream(fos)
 
-        var p = Progression(player!!.currentPosition, seekBar.progress)
+            oos.use {
 
-        oos.use{
-
-            // on met volume directement
-            oos.writeObject(Progression(player!!.currentPosition, seekBar.progress))
+                oos.writeObject(Progression(player!!.currentPosition, seekBar.progress))
+            }
         }
+        catch(io:IOException) {
 
-        return p;
+            io.printStackTrace()
+
+        }
 
     }
 
