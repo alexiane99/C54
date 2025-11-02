@@ -3,6 +3,8 @@ package com.example.tp1
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.icu.text.DecimalFormat
+import android.icu.text.NumberFormat
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -57,7 +59,7 @@ class InfosActivity : AppCompatActivity() {
         artiste.text = chanson!!.artist
         album.text = chanson!!.album
         genre.text = chanson!!.genre
-        duration.text = chanson!!.duration.toString()
+        duration.text = format_timer(chanson!!.duration)
         site.text = chanson!!.site
 
         val ec = Ecouteur()
@@ -78,6 +80,8 @@ class InfosActivity : AppCompatActivity() {
             if(v == boutonRetour) {
 
                 val retour = Intent()
+                retour.putExtra("indexChanson", index)
+                retour.putExtra("resumeProgression", true)
                 setResult(RESULT_OK, retour)
                 finish()
 
@@ -85,11 +89,20 @@ class InfosActivity : AppCompatActivity() {
         }
 
     }
-
     fun setViewImage( v: ImageView, value : String) : Unit  {
 
         Glide.with(this@InfosActivity).load(value).into(v)
 
+    }
+    fun format_timer(tempsSec : Int) : String {  // convertir le temps en format String
+
+        val nf : NumberFormat
+        nf = DecimalFormat("00")
+
+        val min = (tempsSec / 60)
+        val sec = (tempsSec) % 60
+
+        return "${nf.format(min)}:${nf.format((sec))}"
     }
 
 

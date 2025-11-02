@@ -257,7 +257,19 @@ class PlayerActivity : AppCompatActivity() {
 
             if(result.resultCode == RESULT_OK) {
 
-                val intentRetour = result.data
+                val result = result.data
+
+                val resumeProgress = result?.getBooleanExtra("resumeProgression", false)
+                val resumeIndex = result?.getIntExtra("indexChanson", 0)
+
+                if(resumeProgress!!) {
+
+                    indexChanson = resumeIndex!!
+                    player?.seekToDefaultPosition(indexChanson)
+                    deserializerProgression(this@PlayerActivity)
+                    updateInfosChanson()
+                }
+
             }
         }
     }
@@ -320,15 +332,13 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        println("onStart")
 
         playerview.player = player
         init_playlist()
 
         player?.seekToDefaultPosition(indexChanson)
         player?.prepare()
-
-        deserializerProgression(this@PlayerActivity)
-
         player?.play()
 
         updateInfosChanson()
@@ -385,8 +395,11 @@ class PlayerActivity : AppCompatActivity() {
         artiste.text = chanson!!.artist
 
     }
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
+        println("onPause")
+        player?.pause()
+        updateSecondes?.setPause()
 
         try {
             serializerProgression(this@PlayerActivity) // écrire ici la méthode dans le try catch
@@ -397,12 +410,21 @@ class PlayerActivity : AppCompatActivity() {
         }
 
     }
+    override fun onStop() {
+        super.onStop()
+        println("onStop")
+
+    }
     override fun onResume() {
         super.onResume()
-        playerview.player = player
+        println("onResume")
+//        playerview.player = player
+        player?.play()
+        updateSecondes?.setPlay()
     }
     override fun onDestroy() {
         super.onDestroy()
+        println("onDestroy")
         player?.release()
         player = null
     }
