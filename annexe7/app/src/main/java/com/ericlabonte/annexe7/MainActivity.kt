@@ -18,7 +18,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.registerForActivityResult
+//import androidx.activity.result.
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -75,13 +75,16 @@ class MainActivity : AppCompatActivity() {
 
             if(v?.getId() == R.id.boutonLivre) {
 
-                val i : Intent = Intent(Intent.ACTION_VIEW, Uri.parse("http.leslibraires.ca"));
+                val i : Intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://leslibraires.ca"));
+                startActivity(i)
             }
 
             else if (v?.getId() == R.id.boutonAppel) {
 
                 val i: Intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+7897895555"));
+                startActivity(i)
             }
+
 
             else if(v?.getId() == R.id.boutonVille) {
 

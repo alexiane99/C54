@@ -21,6 +21,7 @@ class Modele : Sujet {
         val handler = Handler() // le handler gère le thread
         handler.postDelayed(object : Thread() { // dans un fil d'exécution différent, exécute tout le contenu de run, appelé à chaque 5000 ms
             var compteur: Int = 0
+
             override fun run() {
                 println(currentThread().name)
                 compteur++
@@ -50,13 +51,11 @@ class Modele : Sujet {
         return valeur
     }
 
-
     fun setValeur(valeur: Int) {
         this.valeur = valeur
         //changement de l'état du sujet, avertir les observateurs
         avertirObservateurs()
     }
-
 
     // méthodes de l'interface Sujet
     override fun ajouterObservateur(obs: ObservateurChangement) {

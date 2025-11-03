@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -21,6 +22,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.iterator
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.Listener
@@ -79,27 +81,25 @@ class PlayerActivity : AppCompatActivity() {
         playerview.setUseController(false); // on annule l'utilisation des boutons
         playerview.isClickable = true
 
-        parent = findViewById(R.id.chanson)
         title = findViewById(R.id.texteTitre)
         artiste = findViewById(R.id.texteArtiste)
 
-        boutonPlay = parent.findViewById<ImageView>(R.id.boutonPlay)
-        boutonPause = parent.findViewById<ImageView>(R.id.boutonPause)
-        boutonPrevious = parent.findViewById<ImageView>(R.id.boutonPrevious)
-        boutonNext = parent.findViewById<ImageView>(R.id.boutonNext)
-        boutonForward = parent.findViewById<ImageView>(R.id.boutonForward)
-        boutonBack = parent.findViewById<ImageView>(R.id.boutonBackward)
+        boutonPlay = findViewById(R.id.boutonPlay)
+        boutonPause = findViewById(R.id.boutonPause)
+        boutonPrevious = findViewById(R.id.boutonPrevious)
+        boutonNext = findViewById(R.id.boutonNext)
+        boutonForward = findViewById(R.id.boutonForward)
+        boutonBack = findViewById(R.id.boutonBackward)
 
-        start = parent.findViewById<TextView>(R.id.start)
-        end = parent.findViewById<TextView>(R.id.end)
-        seekBar = parent.findViewById<SeekBar>(R.id.seekBar)
+        start = findViewById(R.id.start)
+        end = findViewById(R.id.end)
+        seekBar = findViewById(R.id.seekBar)
 
         // Initialiser la première chanson à l'écoute
         chanson = liste.listeMusique[indexChanson]
 
         // initialiser les écouteurs d'événements
         val ec = Ecouteur()
-
         boutonPlay?.setOnClickListener(ec)
         boutonPause?.setOnClickListener(ec)
         boutonPrevious?.setOnClickListener(ec)
@@ -111,12 +111,6 @@ class PlayerActivity : AppCompatActivity() {
         sl = SeekListener()
         seekBar?.setOnSeekBarChangeListener(sl)
 
-//        for(enfant in parent) {
-//
-//            if(enfant is ImageView) {
-//
-//                enfant.setOnClickListener(ec)
-//
     }
 
     fun serializerProgression(context: Context)   {
@@ -385,7 +379,6 @@ class PlayerActivity : AppCompatActivity() {
                 player?.addMediaItem(mediaItem)
             }
         }
-
     }
     fun updateInfosChanson() {
 
@@ -402,33 +395,32 @@ class PlayerActivity : AppCompatActivity() {
         player?.pause()
         updateSecondes?.setPause()
 
+        // on sérialise ici
         try {
             serializerProgression(this@PlayerActivity) // écrire ici la méthode dans le try catch
         }
         catch (io:IOException) {
-
             io.printStackTrace()
         }
-
     }
     override fun onStop() {
         super.onStop()
         println("onStop")
 
+        // on sérialise ici
         try {
             serializerProgression(this@PlayerActivity) // écrire ici la méthode dans le try catch
         }
         catch (io:IOException) {
-
             io.printStackTrace()
         }
-
     }
     override fun onResume() {
         super.onResume()
         println("onResume")
 //        playerview.player = player
 
+        // on désérialise ici pour récupérer les infos
         deserializerProgression(this@PlayerActivity)
         updateInfosChanson()
 
@@ -441,7 +433,6 @@ class PlayerActivity : AppCompatActivity() {
         player?.release()
         player = null
     }
-
 }
 
 //ACTION -- MÉTHODE

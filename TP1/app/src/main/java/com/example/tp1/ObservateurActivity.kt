@@ -55,7 +55,6 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
     override fun onStart() {
         super.onStart()
-
     }
 
     override fun onDestroy() {
@@ -64,9 +63,7 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
     }
 
     override fun changement(estRempli: Int) {
-
         remplirListeView()
-
     }
 
     fun remplirArrayList() : ArrayList<HashMap<String, Any>> {
@@ -95,7 +92,6 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
         }
 
         return listeTemp
-
     }
 
     fun remplirListeView() {
@@ -110,16 +106,12 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
 
         // inner class MonAdapter(context: Context, data: List<Map<String, Any>>, resource: Int, from: Array<String>, to: IntArray) : SimpleAdapter(context, data, resource, from, to)
     }
-
     inner class myAdapter(context : Context, data: MutableList<out MutableMap<String, Any>>, resource: Int, from: Array<String>, to: IntArray) : SimpleAdapter(context, data, resource, from, to) {
 
         override fun setViewImage( v: ImageView, value : String) : Unit  {
 
-
             Glide.with(this@ObservateurActivity).load(value).into(v)
-
         }
-
     }
 
     inner class Ecouteur : OnItemClickListener {
@@ -130,8 +122,5 @@ class ObservateurActivity : AppCompatActivity(), ObservateurChangement {
             i.putExtra("indexChanson", indexChanson)
             startActivity(i);
         }
-
-
     }
-
 }

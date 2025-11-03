@@ -14,12 +14,9 @@ object Modele: Sujet { // Singleton object
     private var obs: ObservateurChangement? = null // c'est un observateur, il pourrait en avoir plusieurs
 
     var playlist : ListeMusique = ListeMusique()
-
-
     val url = "https://api.jsonbin.io/v3/b/680a6a1d8561e97a5006b822?meta=false"
 
     // constructeur unique
-
    fun init(context: Context) {
 
         val queue = Volley.newRequestQueue(context)
@@ -37,8 +34,6 @@ object Modele: Sujet { // Singleton object
                 println(li.listeMusique.size)
 
                 playlist = li
-
-
                 avertirObservateurs()
             },
             {
@@ -47,23 +42,17 @@ object Modele: Sujet { // Singleton object
         )
 
         queue.add(stringRequest) // ne pas oublier d'ajouter la requête
-
-
-
     }
-
 
     fun getValeur(): Int {
         return valeur
     }
-
 
     fun setValeur(valeur: Int) {
         this.valeur = valeur
         //changement de l'état du sujet, avertir les observateurs
 
     }
-
 
     // méthodes de l'interface Sujet
     override fun ajouterObservateur(obs: ObservateurChangement) {
@@ -78,6 +67,4 @@ object Modele: Sujet { // Singleton object
     override fun avertirObservateurs() {
         obs!!.changement(1) // important
     }
-
-
 }

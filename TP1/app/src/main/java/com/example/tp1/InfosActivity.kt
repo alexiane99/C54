@@ -41,7 +41,6 @@ class InfosActivity : AppCompatActivity() {
         }
 
         index = intent.getIntExtra("indexCurrent", 0)
-
         chanson = Modele.playlist.listeMusique.get(index)
 
         var titre = findViewById<TextView>(R.id.infoTitre)
@@ -50,6 +49,7 @@ class InfosActivity : AppCompatActivity() {
         var genre = findViewById<TextView>(R.id.infoGenre)
         var duration = findViewById<TextView>(R.id.infoDuration)
         var image = findViewById<ImageView>(R.id.albumCover)
+
         site= findViewById<TextView>(R.id.infoSite)
         boutonRetour = findViewById<Button>(R.id.boutonRetourPlayer)
 
@@ -65,19 +65,17 @@ class InfosActivity : AppCompatActivity() {
         val ec = Ecouteur()
         boutonRetour.setOnClickListener(ec)
         site.setOnClickListener(ec)
-
     }
 
     inner class Ecouteur : OnClickListener {
         override fun onClick(v: View?) {
-
-            if(v == site) {
+            if (v == site) {
 
                 val i : Intent = Intent(Intent.ACTION_VIEW, chanson!!.site.toUri())
                 startActivity(i)
 
             }
-            if(v == boutonRetour) {
+            if (v == boutonRetour) {
 
                 val retour = Intent()
                 retour.putExtra("indexChanson", index)
