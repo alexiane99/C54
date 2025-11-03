@@ -36,17 +36,17 @@ class PlayerActivity : AppCompatActivity() {
     //private lateinit var binding: PlayerActivityBinding
     lateinit var playerview : PlayerView
     lateinit var parent: LinearLayout
-    lateinit var title : TextView
-    lateinit var artiste : TextView
-    lateinit var boutonPlay : ImageView
-    lateinit var boutonPause : ImageView
-    lateinit var boutonPrevious : ImageView
-    lateinit var boutonNext : ImageView
-    lateinit var start: TextView
-    lateinit var end : TextView
-    lateinit var seekBar: SeekBar
-    lateinit var boutonForward : ImageView
-    lateinit var boutonBack : ImageView
+    var title : TextView?= null
+    var artiste : TextView?= null
+    var boutonPlay : ImageView?= null
+    var boutonPause : ImageView?= null
+    var boutonPrevious : ImageView?= null
+    var boutonNext : ImageView?= null
+    var start: TextView?= null
+    var end : TextView?= null
+    var seekBar: SeekBar?= null
+    var boutonForward : ImageView?= null
+    var boutonBack : ImageView?= null
 
     var chanson : Chanson? = null
     var indexChanson : Int = 0
@@ -83,15 +83,16 @@ class PlayerActivity : AppCompatActivity() {
         title = findViewById(R.id.texteTitre)
         artiste = findViewById(R.id.texteArtiste)
 
-        boutonPlay = findViewById(R.id.boutonPlay)
-        boutonPause = findViewById(R.id.boutonPause)
-        boutonPrevious = findViewById(R.id.boutonPrevious)
-        boutonNext = findViewById(R.id.boutonNext)
-        boutonForward = findViewById(R.id.boutonForward)
-        boutonBack = findViewById(R.id.boutonBackward)
-        start = findViewById(R.id.start)
-        end = findViewById(R.id.end)
-        seekBar = findViewById(R.id.seekBar)
+        boutonPlay = parent.findViewById<ImageView>(R.id.boutonPlay)
+        boutonPause = parent.findViewById<ImageView>(R.id.boutonPause)
+        boutonPrevious = parent.findViewById<ImageView>(R.id.boutonPrevious)
+        boutonNext = parent.findViewById<ImageView>(R.id.boutonNext)
+        boutonForward = parent.findViewById<ImageView>(R.id.boutonForward)
+        boutonBack = parent.findViewById<ImageView>(R.id.boutonBackward)
+
+        start = parent.findViewById<TextView>(R.id.start)
+        end = parent.findViewById<TextView>(R.id.end)
+        seekBar = parent.findViewById<SeekBar>(R.id.seekBar)
 
         // Initialiser la première chanson à l'écoute
         chanson = liste.listeMusique[indexChanson]
@@ -99,16 +100,16 @@ class PlayerActivity : AppCompatActivity() {
         // initialiser les écouteurs d'événements
         val ec = Ecouteur()
 
-        boutonPlay.setOnClickListener(ec)
-        boutonPause.setOnClickListener(ec)
-        boutonPrevious.setOnClickListener(ec)
-        boutonNext.setOnClickListener(ec)
-        boutonForward.setOnClickListener(ec)
-        boutonBack.setOnClickListener(ec)
+        boutonPlay?.setOnClickListener(ec)
+        boutonPause?.setOnClickListener(ec)
+        boutonPrevious?.setOnClickListener(ec)
+        boutonNext?.setOnClickListener(ec)
+        boutonForward?.setOnClickListener(ec)
+        boutonBack?.setOnClickListener(ec)
         playerview.setOnClickListener(ec)
 
         sl = SeekListener()
-        seekBar.setOnSeekBarChangeListener(sl)
+        seekBar?.setOnSeekBarChangeListener(sl)
 
 //        for(enfant in parent) {
 //
@@ -125,7 +126,7 @@ class PlayerActivity : AppCompatActivity() {
 
             oos.use {
 
-                oos.writeObject(Progression(player!!.currentPosition, seekBar.progress))
+                oos.writeObject(Progression(player!!.currentPosition, seekBar!!.progress))
             }
         }
         catch(io:IOException) {
@@ -143,7 +144,7 @@ class PlayerActivity : AppCompatActivity() {
                 val p = ois.readObject() as Progression
 
                 player!!.seekTo(p.progress)
-                seekBar.progress = p.seekBarProgress
+                seekBar!!.progress = p.seekBarProgress
                 player!!.play()
             }
         }
@@ -291,13 +292,13 @@ class PlayerActivity : AppCompatActivity() {
 
                 if (duration > 0 && currentPos >= 0) { // si on est avant la fin de la chanson
 
-                    seekBar.max = millisToSec(duration)
-                    seekBar.progress = millisToSec(currentPos)
+                    seekBar!!.max = millisToSec(duration)
+                    seekBar!!.progress = millisToSec(currentPos)
 
                     var temps_restant = duration - currentPos
 
-                    end.text = format_timer(temps_restant)
-                    start.text = format_timer(currentPos)
+                    end!!.text = format_timer(temps_restant)
+                    start!!.text = format_timer(currentPos)
 
                 }
             }
@@ -325,8 +326,8 @@ class PlayerActivity : AppCompatActivity() {
         }
         override fun onFinish() {
 
-            end.text = "00:00"
-            seekBar.progress = 0
+            end!!.text = "00:00"
+            seekBar!!.progress = 0
         }
     }
 
@@ -391,8 +392,8 @@ class PlayerActivity : AppCompatActivity() {
         val indexCurrent = player?.currentMediaItemIndex ?: 0
         chanson = liste.listeMusique[indexCurrent]
 
-        title.text = chanson!!.title
-        artiste.text = chanson!!.artist
+        title!!.text = chanson!!.title
+        artiste!!.text = chanson!!.artist
 
     }
     override fun onPause() {
@@ -414,11 +415,23 @@ class PlayerActivity : AppCompatActivity() {
         super.onStop()
         println("onStop")
 
+        try {
+            serializerProgression(this@PlayerActivity) // écrire ici la méthode dans le try catch
+        }
+        catch (io:IOException) {
+
+            io.printStackTrace()
+        }
+
     }
     override fun onResume() {
         super.onResume()
         println("onResume")
 //        playerview.player = player
+
+        deserializerProgression(this@PlayerActivity)
+        updateInfosChanson()
+
         player?.play()
         updateSecondes?.setPlay()
     }
