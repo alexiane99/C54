@@ -8,6 +8,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.SimpleAdapter
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.android.volley.Request
@@ -27,7 +28,7 @@ class KlaxonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_klaxon)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -43,7 +44,8 @@ class KlaxonActivity : AppCompatActivity() {
             { response ->
                 val li: ListeProduits =
                     Klaxon().parse<ListeProduits>(response) ?: ListeProduits() // se debarrasser du ?
-                    Toast.makeText(this@KlaxonActivity, "Response ${li.articles.size}", LENGTH_LONG).show()
+                    decomposerReponse(li)
+                Toast.makeText(this@KlaxonActivity, "Response ${li.articles.size}", LENGTH_LONG).show()
                     // decomposerReponse()
             },
             { Toast.makeText(this, "erreur", Toast.LENGTH_LONG).show() })
@@ -51,6 +53,24 @@ class KlaxonActivity : AppCompatActivity() {
         // reste à prendre la liste et la convertir dans un simple adapter
 
         queue.add(stringRequest) // ne pas oublier d'ajouter la requête
+    }
+
+    fun decomposerReponse(li : ListeProduits) : ArrayList<HashMap<String, Any>> {
+
+        val listTemp = ArrayList<HashMap<String, Any>>()
+
+        val listeProducts = li
+
+        for(i in 0 ≤ .. ≤ listeProducts.articles.size - 1) {
+
+            var temp = HashMap<String, Any>()
+            temp.put("nom", listeProducts.articles.get(i).nom)
+            temp.put("prix", listeProducts.articles.get(i).prix)
+            listTemp.add(temp)
+        }
+
+        val adapt = SimpleAdapter(this, listTemp, R.id.main_klaxon, arrayOf("nom", "prix"))
+
     }
 
     inner class Ecouteur : AdapterView.OnItemClickListener {
