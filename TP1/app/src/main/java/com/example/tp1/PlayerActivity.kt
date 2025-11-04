@@ -435,14 +435,4 @@ class PlayerActivity : AppCompatActivity() {
     }
 }
 
-//ACTION -- MÉTHODE
-// Charger un média	player.setMediaItem(MediaItem.fromUri(uri))
-//Démarrer la lecture	player.play()
-//Mettre en pause	player.pause()
-//Aller à un instant précis	player.seekTo(positionMs)
-//Lire la position actuelle	player.currentPosition
-//Lire la durée totale	player.duration
-//Avancer de quelques secondes	player.seekForward()
-//Reculer de quelques secondes	player.seekBack()
-//Volume	player.volume = 0.5f
-//Vitesse	player.setPlaybackSpeed(1.5f)
+
