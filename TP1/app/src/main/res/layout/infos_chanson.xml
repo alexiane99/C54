@@ -4,6 +4,7 @@
     android:id="@+id/infos_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/themes"
     android:orientation="vertical">
 
     <LinearLayout
@@ -38,13 +39,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:text="Titre : " />
+                android:text="Titre : "
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/infoTitre"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -60,13 +63,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:text="Artiste" />
+                android:text="Artiste"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/infoArtiste"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -82,13 +87,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:text="Album :" />
+                android:text="Album :"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/infoAlbum"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -104,13 +111,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:text="Genre :" />
+                android:text="Genre :"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/infoGenre"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -126,13 +135,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:text="Duration : " />
+                android:text="Duration : "
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/infoDuration"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,14 +158,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:text="Site : " />
+                android:text="Site : "
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/infoSite"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:textColor="#2038BC" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </LinearLayout>
@@ -169,6 +181,7 @@
             android:id="@+id/boutonRetourPlayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#700C7A"
             android:text="Retour" />
     </LinearLayout>
 
