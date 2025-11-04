@@ -29,7 +29,7 @@ object Modele: Sujet { // Singleton object
                 val li: ListeMusique =
                     Klaxon().parse<ListeMusique>(response) ?: ListeMusique() // pour se débarrasser du ?
 
-                Toast.makeText(context, "Response ${li.listeMusique.size}", LENGTH_LONG).show()
+                Toast.makeText(context, "${li.listeMusique.size} chansons téléchargées dans cette playlist", LENGTH_LONG).show()
 
                 println(li.listeMusique.size)
 

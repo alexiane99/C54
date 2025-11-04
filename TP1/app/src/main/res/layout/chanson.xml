@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/themes"
-    android:backgroundTint="#9C27B0"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -21,6 +20,7 @@
             android:id="@+id/player_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/themes"
             app:show_buffering="when_playing"
             app:show_shuffle_button="true" />
     </LinearLayout>
@@ -31,28 +31,27 @@
         android:layout_height="0dp"
         android:layout_weight="0.4"
         android:background="@drawable/themes"
-        android:backgroundTint="#9C27B0"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/texteTitre"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:background="@drawable/themes"
+            android:layout_weight="1"
             android:gravity="center"
             android:hint="Title"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/texteArtiste"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/themes"
             android:gravity="center"
             android:hint="Artist "
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -61,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:background="@drawable/themes"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -71,7 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.75"
             android:gravity="center"
-            android:hint="0:00" />
+            android:hint="0:00"
+            android:textColor="@color/magenta" />
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -85,7 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.75"
             android:gravity="center"
-            android:hint="0:00" />
+            android:hint="0:00"
+            android:textColor="@color/magenta" />
 
     </LinearLayout>
 
@@ -94,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:background="@drawable/themes"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -110,6 +111,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:padding="8dp"
                 app:srcCompat="@drawable/back" />
         </LinearLayout>
 
@@ -125,6 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:padding="8dp"
                 app:srcCompat="@drawable/backward" />
         </LinearLayout>
 
@@ -140,6 +143,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:padding="8dp"
                 app:srcCompat="@drawable/play" />
         </LinearLayout>
 
@@ -155,6 +159,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:padding="8dp"
                 app:srcCompat="@drawable/pause" />
         </LinearLayout>
 
@@ -170,6 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:padding="8dp"
                 app:srcCompat="@drawable/fastforward" />
         </LinearLayout>
 
@@ -185,6 +191,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:padding="8dp"
                 app:srcCompat="@drawable/next" />
         </LinearLayout>
 
