@@ -45,6 +45,7 @@ class MainActivity2 : AppCompatActivity() {
             }
             else {
                 anim.reverse()
+                init = true
             }
 
 
