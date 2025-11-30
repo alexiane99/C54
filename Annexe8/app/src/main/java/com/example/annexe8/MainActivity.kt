@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         var anim2 = ObjectAnimator.ofFloat(view, View.ROTATION_X, 360f)
         anim2.duration = 1000
         anim2.interpolator = BounceInterpolator()
-
         anim2.repeatCount = ObjectAnimator.INFINITE
         anim2.repeatMode = ObjectAnimator.REVERSE
 
@@ -50,8 +49,8 @@ class MainActivity : AppCompatActivity() {
         bouton.setOnClickListener{
 
             animatorSet.start()
-//            anim.start() // démarrer l’animation
-//            anim2.start()
+//          anim.start() // démarrer l’animation
+//          anim2.start()
 
         }
 

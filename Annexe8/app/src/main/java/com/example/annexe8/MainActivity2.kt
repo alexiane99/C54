@@ -41,11 +41,11 @@ class MainActivity2 : AppCompatActivity() {
             if (init) {
 
                 anim.start()
-                init = false
+                init = false // car on veut obtenir la 2e animation de retour
             }
             else {
                 anim.reverse()
-                init = true
+                init = true // ici on remet à true car on veut retrouver la 1ere animation
             }
 
 
