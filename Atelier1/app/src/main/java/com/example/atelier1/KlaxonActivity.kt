@@ -1,5 +1,6 @@
 package com.example.atelier1
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -57,6 +58,7 @@ class KlaxonActivity : AppCompatActivity() {
         queue.add(stringRequest) // ne pas oublier d'ajouter la requête
     }
 
+    @SuppressLint("ResourceType")
     fun decomposerReponse(li: ListeProduits): ArrayList<HashMap<String, Any>> {
 
         val listTemp = ArrayList<HashMap<String, Any>>()
@@ -72,7 +74,7 @@ class KlaxonActivity : AppCompatActivity() {
             listTemp.add(temp)
         }
 
-        val adapt = SimpleAdapter(this, listTemp, R.id.main_klaxon, arrayOf("nom", "prix"))
+//        val adapt = SimpleAdapter(this, listTemp, R.id.main_klaxon, arrayOf("nom", "prix"),intArrayOf(R.id.txtNom, R.id.txtPrix) )
     }
 
     inner class Ecouteur : AdapterView.OnItemClickListener {

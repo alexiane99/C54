@@ -192,6 +192,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        // VERSION FONCTIONNELLE
+        fun trouverAubaine_ver(nomProd: String): Produit {
+
+            var meilleurProduit: Produit? = null
+            var meilleurPrix = Double.MAX_VALUE
+
+            for (produit in listeProduits) {
+                if (produit.nom == nomProd && produit.prix < meilleurPrix) {
+                    meilleurPrix = produit.prix
+                    meilleurProduit = produit
+                }
+            }
+
+            return meilleurProduit ?: Produit("", 0.0, "")
+        }
+
+
            // var listeTemp = ArrayList<String>()
 
 //            for(i in 0 until listeProduits.size)   {
