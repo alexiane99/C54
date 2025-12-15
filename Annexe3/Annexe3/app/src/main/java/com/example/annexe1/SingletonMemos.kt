@@ -22,7 +22,7 @@ object SingletonMemos {
     // besoin du contexte car n'est pas dans une activité
     fun serialiserListe(contexte : Context) {
 
-        // le contexte ouvre un fichier pour de sérialisation pour insérer la liste
+        // le contexte ouvre un fichier de sérialisation pour insérer la liste
         val fos = contexte.openFileOutput("serialisation.ser", Context.MODE_PRIVATE)
         val oos = ObjectOutputStream(fos) // tampon spécial pour les objets
 

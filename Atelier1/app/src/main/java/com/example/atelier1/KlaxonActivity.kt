@@ -26,7 +26,7 @@ class KlaxonActivity : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        this.enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_klaxon)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -39,14 +39,16 @@ class KlaxonActivity : AppCompatActivity() {
 
         liste.onItemClickListener = ec
 
-        val stringRequest = StringRequest (
+        val stringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
                 val li: ListeProduits =
-                    Klaxon().parse<ListeProduits>(response) ?: ListeProduits() // se debarrasser du ?
-                    decomposerReponse(li)
-                Toast.makeText(this@KlaxonActivity, "Response ${li.articles.size}", LENGTH_LONG).show()
-                    // decomposerReponse()
+                    Klaxon().parse<ListeProduits>(response)
+                        ?: ListeProduits() // se debarrasser du ?
+                decomposerReponse(li)
+                Toast.makeText(this@KlaxonActivity, "Response ${li.articles.size}", LENGTH_LONG)
+                    .show()
+                // decomposerReponse()
             },
             { Toast.makeText(this, "erreur", Toast.LENGTH_LONG).show() })
 
@@ -55,13 +57,14 @@ class KlaxonActivity : AppCompatActivity() {
         queue.add(stringRequest) // ne pas oublier d'ajouter la requête
     }
 
-    fun decomposerReponse(li : ListeProduits) : ArrayList<HashMap<String, Any>> {
+    fun decomposerReponse(li: ListeProduits): ArrayList<HashMap<String, Any>> {
 
         val listTemp = ArrayList<HashMap<String, Any>>()
 
         val listeProducts = li
 
-        for(i in 0 ≤ .. ≤ listeProducts.articles.size - 1) {
+        for (i in 0.rangeTo(listeProducts.articles.size - 1)) {
+//        for(i in 0 ≤ ... ≤ listeProducts.articles.size - 1) {
 
             var temp = HashMap<String, Any>()
             temp.put("nom", listeProducts.articles.get(i).nom)
@@ -70,7 +73,6 @@ class KlaxonActivity : AppCompatActivity() {
         }
 
         val adapt = SimpleAdapter(this, listTemp, R.id.main_klaxon, arrayOf("nom", "prix"))
-
     }
 
     inner class Ecouteur : AdapterView.OnItemClickListener {

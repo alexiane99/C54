@@ -33,10 +33,10 @@ class ListeActivity : AppCompatActivity() {
 
         liste.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, lireMemos()!!)
 
-//        boutonRetour.setOnClickListener {
-//
-//            finish()
-//        }
+        boutonRetour.setOnClickListener {
+
+            finish()
+        }
     }
 
 //    fun lireMemos() : ArrayList<String>
